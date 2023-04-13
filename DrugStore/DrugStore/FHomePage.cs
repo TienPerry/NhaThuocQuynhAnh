@@ -29,18 +29,19 @@ namespace DrugStore
         }
 
         BindingSource accountList = new BindingSource();
-        BindingSource drugList = new BindingSource();
+        BindingSource thuocList = new BindingSource();
         BindingSource khoThuocList = new BindingSource();
         BindingSource nccList = new BindingSource();
-        BindingSource customerList = new BindingSource();
+        BindingSource khachhangList = new BindingSource();
         BindingSource phieuNhapList = new BindingSource();
-        BindingSource drugPNHList = new BindingSource();
+        BindingSource thuocPNHList = new BindingSource();
         BindingSource hoadonList = new BindingSource();
         BindingSource ThuocBanHangList = new BindingSource();
         BindingSource baoCaoHoaDonList = new BindingSource();
         DataTable dataTable_pnh, dataTable_banhang;
         HashSet<string> dsthuoc_pnh, dsthuoc_banhang;
 
+        // Ẩn các panel
         void disable()
         {
             pnl_qlnv.Visible = false;
@@ -63,6 +64,50 @@ namespace DrugStore
             pnl_onbcdoanhthu.Visible = false;
             pnl_dshd_qlbh.Visible= false;
         }
+        private void FHomePage_Load(object sender, EventArgs e)
+        {
+            if (!isAdmin)
+            {
+                btn_qlnv.Enabled = false;
+                btn_qlncc.Enabled = false;
+                btn_qlnh.Enabled = false;
+                btn_themthuoc.Enabled = false;
+                btn_suathuoc.Enabled = false;
+                btn_xoathuoc.Enabled = false;
+            }
+            WindowState = FormWindowState.Maximized;
+            pnl_onbcdoanhthu.Hide();
+            pnl_onbcthuoc.Hide();
+            pnl_onqlbh.Hide();
+            pnl_onqlnh.Hide();
+            pnl_onqlnv.Hide();
+
+            dgv_nv.DataSource = accountList;
+            dgv_dsthuoc.DataSource = thuocList;
+            dgv_dsthuockt.DataSource = khoThuocList;
+            dgv_ncc.DataSource = nccList;
+            dgv_qlkh.DataSource = khachhangList;
+            dgv_dspn.DataSource = phieuNhapList;
+            dgv_dsthuoc_pnh.DataSource = thuocPNHList;
+            dgv_dshd.DataSource = hoadonList;
+            dgv_bh_danhMucThuoc.DataSource = ThuocBanHangList;
+            dgv_doanhthu.DataSource = baoCaoHoaDonList;
+            txt_tongTien.Text = string.Format("{0:C5}", txt_tongTien.Text);
+            txtb_tienKhachDua.Text = string.Format("{0:C5}", txtb_tienKhachDua.Text);
+            txtb_tienTraLai.Text = string.Format("{0:C5}", txtb_tienTraLai.Text);
+            tb_tongdt.Text = string.Format("{0:C5}", txtb_tienTraLai.Text);
+            //loadNhanVien();
+            //loadThuoc();
+            //loadKhoThuoc();
+            //loadNCC();
+            //loadKhachHang();
+            //loadPhieuNhapHang();
+            //loadHoaDon();
+            //loadThuocBanHang();
+        }
+
+
+        
         private void btn_qlnv_Click(object sender, EventArgs e)
         {
             pnl_onqlnv.Height = btn_qlnv.Height;
@@ -71,24 +116,89 @@ namespace DrugStore
             pnl_qlnv.Visible = true;
             pnl_onqlnv.Visible = true;
         }
+        
+        // Hiện quản lý nhà cung cấp
+        private void btn_qlncc_Click(object sender, EventArgs e)
+        {
+            pnl_onqlncc.Height = btn_qlncc.Height;
+            pnl_onqlncc.Top = btn_qlncc.Top;
+            disable();
+            loadNCC();
+            pnl_qlncc.Visible = true;
+            pnl_onqlncc.Visible = true;
+        }
+        // Thêm nhà cung cấp
+        private void btn_themncc_Click(object sender, EventArgs e)
+        {
+            FAddNCC f = new FAddNCC(this);
+            f.Show();
+        }
+        // Sửa nhà cung cấp
+        private void btn_suancc_Click(object sender, EventArgs e)
+        {
+            if (dgv_ncc.RowCount > 0)
+            {
 
+                String mancc = dgv_ncc.CurrentRow.Cells["MANCC"].Value.ToString();
+                String tenncc = dgv_ncc.CurrentRow.Cells["TENNCC1"].Value.ToString();
+                String sdt = dgv_ncc.CurrentRow.Cells["SDTNCC"].Value.ToString();
+                String diachi = dgv_ncc.CurrentRow.Cells["DIACHINCC"].Value.ToString();
+                FAddNCC f = new FAddNCC(this, true, mancc, tenncc, sdt, diachi);
+                f.Show();
+            }
+        }
+        // Xóa nhà cung cấp
+        private void btn_xoancc_Click(object sender, EventArgs e)
+        {
+            if (dgv_ncc.RowCount > 0)
+            {
+
+                string mancc = dgv_ncc.CurrentRow.Cells["MANCC"].Value.ToString();
+                string tenncc = dgv_ncc.CurrentRow.Cells["TENNCC1"].Value.ToString();
+                DialogResult res = MessageBox.Show("Xóa nhà cung cấp này thì mọi thuốc, chi tiết phiếu nhập hàng, chi tiết hóa đơn có liên quan sẽ bị xóa. Hành động này không thể hoàn tác", "Bạn có chắc là muốn xóa nhà cung cấp: " + tenncc, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                if (res == DialogResult.OK)
+                {
+                    bool check = NhaCungCapBUS.Instance.deleteNCC(mancc);
+                    if (check)
+                    {
+                        loadNCC();
+                        loadThuoc();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa nhà cung cấp không thành công");
+                    }
+                }
+                if (res == DialogResult.Cancel)
+                {
+
+                }
+            }
+        }
+
+        // Hiện Quản lý nhập hàng
         private void btn_qlnh_Click(object sender, EventArgs e)
         {
             pnl_onqlnh.Height = btn_qlnh.Height;
             pnl_onqlnh.Top = btn_qlnh.Top;
             disable();
+            loadPhieuNhapHang();
             pnl_dspn.Visible = true;
             pnl_onqlnh.Visible = true;
         }
 
+        // Hiện Quản lý bán hàng
         private void btn_qlbh_Click(object sender, EventArgs e)
         {
             pnl_onqlbh.Height = btn_qlbh.Height;
             pnl_onqlbh.Top = btn_qlbh.Top;
             disable();
+            loadHoaDon();
             pnl_dshd_qlbh.Visible = true;
             pnl_onqlbh.Visible = true;
         }
+
+
         private void btn_laphd_qlbh_Click(object sender, EventArgs e)
         {
             dsthuoc_banhang = new HashSet<string>();
@@ -109,6 +219,8 @@ namespace DrugStore
             dataTable_banhang.Columns.Add("SOLUONG");
             dgv_bh_hoaDon.DataSource = dataTable_banhang;
         }
+
+        // Hiện báo cáo doanh thu
         private void btn_bcdoanhthu_Click(object sender, EventArgs e)
         {
             pnl_onbcdoanhthu.Height = btn_bcdoanhthu.Height;
@@ -118,13 +230,15 @@ namespace DrugStore
             pnl_bcdoanhthu.Visible = true;
             pnl_onbcdoanhthu.Visible = true;
         }
+
+        // Load DataGridView
         public void loadNhanVien()
         {
             accountList.DataSource = NhanVienBUS.Instance.getAllAccount();
         }
         public void loadThuoc()
         {
-            drugList.DataSource = ThuocBUS.Instance.getAllDrugs();
+            thuocList.DataSource = ThuocBUS.Instance.getAllDrugs();
         }
         public void loadKhoThuoc()
         {
@@ -136,7 +250,7 @@ namespace DrugStore
         }
         public void loadKhachHang()
         {
-            customerList.DataSource = KhachHangBUS.Instance.getAllCustomer();
+            khachhangList.DataSource = KhachHangBUS.Instance.getAllCustomer();
         }
         public void loadPhieuNhapHang()
         {
@@ -144,7 +258,7 @@ namespace DrugStore
         }
         public void loadThuocPNH(string mancc)
         {
-            drugPNHList.DataSource = ThuocBUS.Instance.getAllDrugsPNH(mancc);
+            thuocPNHList.DataSource = ThuocBUS.Instance.getAllDrugsPNH(mancc);
         }
         public void loadHoaDon()
         {
@@ -158,47 +272,7 @@ namespace DrugStore
         {
             baoCaoHoaDonList.DataSource = HoaDonBUS.Instance.getAllHoaDonTheoNgay(date1, date2);
         }
-        private void FHomePage_Load(object sender, EventArgs e)
-        {
-            if(!isAdmin)
-            {
-                btn_qlnv.Enabled = false;
-                btn_qlncc.Enabled = false;
-                btn_qlnh.Enabled = false;
-                btn_themthuoc.Enabled = false;
-                btn_suathuoc.Enabled = false;
-                btn_xoathuoc.Enabled = false;
-            }
-            WindowState = FormWindowState.Maximized;
-            pnl_onbcdoanhthu.Hide();
-            pnl_onbcthuoc.Hide();
-            pnl_onqlbh.Hide();
-            pnl_onqlnh.Hide();
-            pnl_onqlnv.Hide();
-
-            dgv_nv.DataSource = accountList;
-            dgv_dsthuoc.DataSource = drugList;
-            dgv_dsthuockt.DataSource = khoThuocList;
-            dgv_ncc.DataSource = nccList;
-            dgv_qlkh.DataSource = customerList;
-            dgv_dspn.DataSource = phieuNhapList;
-            dgv_dsthuoc_pnh.DataSource = drugPNHList;
-            dgv_dshd.DataSource = hoadonList;
-            dgv_bh_danhMucThuoc.DataSource = ThuocBanHangList;
-            dgv_doanhthu.DataSource = baoCaoHoaDonList;
-            txt_tongTien.Text = string.Format("{0:C5}", txt_tongTien.Text);
-            txtb_tienKhachDua.Text = string.Format("{0:C5}", txtb_tienKhachDua.Text);
-            txtb_tienTraLai.Text = string.Format("{0:C5}", txtb_tienTraLai.Text);
-            tb_tongdt.Text = string.Format("{0:C5}", txtb_tienTraLai.Text);
-            loadNhanVien();
-            loadThuoc();
-            loadKhoThuoc();
-            loadNCC();
-            loadKhachHang();
-            loadPhieuNhapHang();
-            loadHoaDon();
-            loadThuocBanHang();
-        }
+        
 
         private void btn_themnv_Click(object sender, EventArgs e)
         {
@@ -223,18 +297,18 @@ namespace DrugStore
         {
             if (tb_timkiem.Text != "")
             {
-                BindingSource tempDrugList = new BindingSource();
+                BindingSource tempthuocList = new BindingSource();
                 string text_search = tb_timkiem.Text.ToString();
                 DataTable dt = ThuocBUS.Instance.timThuoc(text_search);
-                tempDrugList.DataSource = dt;
-                dgv_dsthuoc.DataSource = tempDrugList;
+                tempthuocList.DataSource = dt;
+                dgv_dsthuoc.DataSource = tempthuocList;
             }
 
         }
 
         private void btn_reload_Click(object sender, EventArgs e)
         {
-            dgv_dsthuoc.DataSource = drugList;
+            dgv_dsthuoc.DataSource = thuocList;
             tb_timkiem.Text = "";
         }
 
@@ -273,6 +347,7 @@ namespace DrugStore
             pnl_ondmthuoc.Height = btn_dmthuoc.Height;
             pnl_ondmthuoc.Top = btn_dmthuoc.Top;
             disable();
+            loadThuoc();
             pnl_dmthuoc.Visible = true;
             pnl_onbcthuoc.Visible = true;
             pnl_ondmthuoc.Visible = true;
@@ -286,6 +361,7 @@ namespace DrugStore
             pnl_onkhothuoc.Height = btn_khothuoc.Height;
             pnl_onkhothuoc.Top = btn_khothuoc.Top;
             disable();
+            loadKhoThuoc();
             pnl_khothuoc.Visible = true;
             pnl_onbcthuoc.Visible = true;
             pnl_onkhothuoc.Visible = true;
@@ -300,45 +376,210 @@ namespace DrugStore
             pnl_onqlkh.Visible = true;
         }
 
-        private void btn_qlncc_Click(object sender, EventArgs e)
-        {
-            pnl_onqlncc.Height = btn_qlncc.Height;
-            pnl_onqlncc.Top = btn_qlncc.Top;
-            disable();
-            pnl_qlncc.Visible = true;
-            pnl_onqlncc.Visible = true;
-        }
 
-        private void btn_xoancc_Click(object sender, EventArgs e)
+        // Quản lý nhập hàng
+        private void btn_lapPhieuNhap_Click(object sender, EventArgs e)
         {
-            if(dgv_ncc.RowCount > 0)
+            dsthuoc_pnh = new HashSet<string>();
+            tb_tongtiennh.Text = "";
+            pnl_onqlnh.Height = btn_qlnh.Height;
+            pnl_onqlnh.Top = btn_qlnh.Top;
+            disable();
+            tb_maphieu.Text = PhieuNhapHangBUS.Instance.getMaphieu();
+            loadNCC();
+            cbb_nccNH.DataSource = nccList;
+            cbb_nccNH.DisplayMember = "TENNCC";
+            cbb_nccNH.ValueMember = "MANCC";
+            string mancc = cbb_nccNH.SelectedValue.ToString();
+            loadThuocPNH(mancc);
+            pnl_lapphieunhap.Visible = true;
+            pnl_onqlnh.Visible = true;
+            dataTable_pnh = new DataTable();
+            dataTable_pnh.Columns.Add("SODK");
+            dataTable_pnh.Columns.Add("TENTHUOC");
+            dataTable_pnh.Columns.Add("GIANHAP");
+            dataTable_pnh.Columns.Add("SOLUONGNHAP");
+            dataTable_pnh.Columns.Add("HSD");
+            dgv_phieunh.DataSource = dataTable_pnh;
+        }
+        private void dgv_dspn_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgv_dspn.Rows.Count != 0)
+            {
+                string maphieu = dgv_dspn.CurrentRow.Cells["MAPHIEU"].Value.ToString();
+                dgv_ctpn.DataSource = ChiTietNhapHangBUS.Instance.getChiTietNhapHang(maphieu);
+            }
+        }
+        private void btn_huylapphieu_Click(object sender, EventArgs e)
+        {
+            pnl_onqlnh.Height = btn_qlnh.Height;
+            pnl_onqlnh.Top = btn_qlnh.Top;
+            disable();
+            pnl_dspn.Visible = true;
+            pnl_onqlnh.Visible = true;
+        }
+        // Combobox ncc
+        private void cbb_nccNH_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cbb_nccNH.ValueMember = "MANCC";
+            string mancc = cbb_nccNH.SelectedValue.ToString();
+            loadThuocPNH(mancc);
+        }
+        private void tinhTongGiaNhap()
+        {
+            double tonggianhap = 0;
+            foreach (DataGridViewRow row in dgv_phieunh.Rows)
+            {
+                if (row.Cells["SOLUONGNHAP"].Value.ToString() != "")
+                {
+                    double gianhappnh = Convert.ToDouble(row.Cells["GIANHAPPNH1"].Value);
+                    int soluong = Convert.ToInt32(row.Cells["SOLUONGNHAP"].Value);
+                    tonggianhap = tonggianhap + soluong * gianhappnh;
+                }
+                else
+                {
+                    MessageBox.Show("Số lượng không được để trống");
+                }
+            }
+            tb_tongtiennh.Text = tonggianhap.ToString();
+        }
+        // dgv bên trái
+        private void dgv_dsthuoc_pnh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgv_dsthuoc_pnh.RowCount != 0)
             {
 
-                string mancc = dgv_ncc.CurrentRow.Cells["MANCC"].Value.ToString();
-                string tenncc = dgv_ncc.CurrentRow.Cells["TENNCC1"].Value.ToString();
-                DialogResult res = MessageBox.Show("Xóa nhà cung cấp này thì mọi phiếu nhập hàng và thuốc có liên quan sẽ bị xóa. Hành động này không thể undo", "Bạn có chắc là muốn xóa: " + tenncc, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                if (res == DialogResult.OK)
-                {
-                    bool xoaThuoc = ThuocBUS.Instance.deleteThuocNCC(mancc);
-                    if (xoaThuoc) { }
-                    bool check = NhaCungCapBUS.Instance.deleteNCC(mancc);
-                    if (check)
-                    {
-                        loadNCC();
-                        loadThuoc();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Xóa nhà cung cấp không thành công");
-                    }
-                }
-                if (res == DialogResult.Cancel)
-                {
+                string sodk = dgv_dsthuoc_pnh.CurrentRow.Cells["SODKPNH"].Value.ToString();
+                string tenThuoc = dgv_dsthuoc_pnh.CurrentRow.Cells["TENTHUOCPNH"].Value.ToString();
+                double gianhap = Convert.ToDouble(dgv_dsthuoc_pnh.CurrentRow.Cells["GIANHAPPNH"].Value);
+                int soluongnhap = 1;
+                DateTime hsd = DateTime.Now;
 
+                if (!dsthuoc_pnh.Contains(sodk))
+                {
+                    dsthuoc_pnh.Add(sodk);
+                    dataTable_pnh.Rows.Add(sodk, tenThuoc, gianhap, soluongnhap, hsd);
+                    dgv_phieunh.DataSource = dataTable_pnh;
+                    tinhTongGiaNhap();
+                    dgv_dsthuoc_pnh.CurrentRow.DefaultCellStyle.BackColor = Color.Aqua;
+                }
+            }
+        }
+        //DataGridView bên phải
+        private void dgv_phieunh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgv_phieunh.RowCount != 0)
+            {
+
+                string sodk = dgv_phieunh.CurrentRow.Cells["SODKPNH1"].Value.ToString();
+                dsthuoc_pnh.Remove(sodk);
+                dgv_phieunh.Rows.Remove(dgv_phieunh.CurrentRow);
+                ((DataTable)dgv_phieunh.DataSource).AcceptChanges();
+                tinhTongGiaNhap();
+                foreach (DataGridViewRow row in dgv_dsthuoc_pnh.Rows)
+                {
+                    if (row.Cells["SODKPNH"].Value.ToString() == sodk)
+                    {
+                        row.DefaultCellStyle.BackColor = Color.White;
+                    }
                 }
             }
         }
 
+        private void dgv_phieunh_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            tinhTongGiaNhap();
+        }
+        private void btn_lappnh_Click(object sender, EventArgs e) //
+        {
+            if (tb_tongtiennh.Text.ToString() != "")
+            {
+                string maphieu = tb_maphieu.Text;
+                DateTime nl = Convert.ToDateTime(dtp_ngaynh.Value);
+                string ngaylap = nl.ToString("yyyy-MM-dd");
+                double tonggianhap = Convert.ToDouble(tb_tongtiennh.Text);
+                foreach (DataGridViewRow row in dgv_phieunh.Rows)
+                {
+                    if (row.Cells["SOLUONGNHAP"].Value.ToString() == "" || row.Cells["HSD"].Value.ToString() == "")
+                    {
+                        return;
+                    }
+                }
+                bool check = PhieuNhapHangBUS.Instance.insertPhieuNhapHang(maphieu, ngaylap, tonggianhap);
+                
+                if (check)
+                {
+                    insertKhoThuoc();
+                    disable();
+                    loadPhieuNhapHang();
+                    pnl_dspn.Visible = true;
+                    loadKhoThuoc();
+                    loadThuocBanHang();
+                }
+            }
+        }
+        private void insertKhoThuoc()
+        {
+            string maphieu = tb_maphieu.Text;
+            foreach (DataGridViewRow row in dgv_phieunh.Rows)
+            {
+                string sodk = Convert.ToString(row.Cells["SODKPNH1"].Value);
+                int soluong = Convert.ToInt32(row.Cells["SOLUONGNHAP"].Value);
+                DateTime hsddt = Convert.ToDateTime(row.Cells["HSD"].Value);
+                string hsd = hsddt.ToString("yyyy-MM-dd");
+                bool check = KhoThuocBUS.Instance.insertKhoThuoc(sodk, maphieu, hsd, soluong);
+                bool check2 = ChiTietNhapHangBUS.Instance.insertChiTietNhapHang(maphieu, sodk, soluong);
+            }
+        }
+        // dgv datetime picker
+        private DateTimePicker dateTimePicker;
+        private void dgv_phieunh_CellClick(object sender, DataGridViewCellEventArgs e) //
+        {
+            if (e.ColumnIndex == 4)
+            {
+                dateTimePicker = new DateTimePicker();
+                dgv_phieunh.Controls.Add(dateTimePicker);
+                dateTimePicker.Format = DateTimePickerFormat.Short;
+                Rectangle rectangle = dgv_phieunh.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
+                dateTimePicker.Size = new Size(rectangle.Width, rectangle.Height);
+                dateTimePicker.Location = new Point(rectangle.X, rectangle.Y);
+                dateTimePicker.CloseUp += new EventHandler(datetimepicker_closeup);
+                dateTimePicker.TextChanged += new EventHandler(datetimepicker_textchanged);
+                dateTimePicker.Visible = true;
+            }
+        }
+
+        private void datetimepicker_textchanged(object? sender, EventArgs e)
+        {
+            dgv_phieunh.CurrentCell.Value = dateTimePicker.Value.ToString();
+        }
+
+        private void datetimepicker_closeup(object? sender, EventArgs e)
+        {
+            dateTimePicker.Visible = false;
+        }
+        // Validated
+        private void dgv_phieunh_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)  //
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(Soluong_KeyPress);
+            if (dgv_phieunh.CurrentCell.ColumnIndex == 3)
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(Soluong_KeyPress);
+                }
+            }
+        }
+        private void Soluong_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        // Quản lý khách hàng
         private void btn_themkh_Click(object sender, EventArgs e)
         {
             FAddKhachHang fa = new FAddKhachHang(false, this);
@@ -394,7 +635,7 @@ namespace DrugStore
             }
             else
             {
-                dgv_dsthuoc.DataSource = drugList;
+                dgv_dsthuoc.DataSource = thuocList;
             }
         }
 
@@ -436,195 +677,7 @@ namespace DrugStore
             }
         }
 
-        private void btn_lapPhieuNhap_Click(object sender, EventArgs e)
-        {
-            dsthuoc_pnh = new HashSet<string>();
-            tb_tongtiennh.Text = "";
-            pnl_onqlnh.Height = btn_qlnh.Height;
-            pnl_onqlnh.Top = btn_qlnh.Top;
-            disable();
-            tb_maphieu.Text = PhieuNhapHangBUS.Instance.getMaphieu();
-            cbb_nccNH.DataSource = nccList;
-            cbb_nccNH.DisplayMember = "TENNCC";
-            pnl_lapphieunhap.Visible = true;
-            pnl_onqlnh.Visible = true;
-            dataTable_pnh = new DataTable();
-            dataTable_pnh.Columns.Add("SODK");
-            dataTable_pnh.Columns.Add("TENTHUOC");
-            dataTable_pnh.Columns.Add("GIANHAP");
-            dataTable_pnh.Columns.Add("SOLUONGNHAP");
-            dataTable_pnh.Columns.Add("HSD");
-            dgv_phieunh.DataSource = dataTable_pnh;
-        }
-
-        private void btn_huylapphieu_Click(object sender, EventArgs e)
-        {
-            pnl_onqlnh.Height = btn_qlnh.Height;
-            pnl_onqlnh.Top = btn_qlnh.Top;
-            disable();
-            pnl_dspn.Visible = true;
-            pnl_onqlnh.Visible = true;
-        }
-
-        private void cbb_nccNH_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            cbb_nccNH.ValueMember = "MANCC";
-            string mancc = cbb_nccNH.SelectedValue.ToString();
-            loadThuocPNH(mancc);
-        }
-        private void tinhTongGiaNhap()
-        {
-            double tonggianhap = 0;
-            foreach (DataGridViewRow row in dgv_phieunh.Rows)
-            {
-                if (row.Cells["SOLUONGNHAP"].Value.ToString() != "")
-                {
-                    double gianhappnh = Convert.ToDouble(row.Cells["GIANHAPPNH1"].Value);
-                    int soluong = Convert.ToInt32(row.Cells["SOLUONGNHAP"].Value);
-                    tonggianhap = tonggianhap + soluong * gianhappnh;
-                }
-                else
-                {
-                    MessageBox.Show("Số lượng không được để trống");
-                }
-            }
-            tb_tongtiennh.Text = tonggianhap.ToString();
-        }
-
-        private void dgv_dsthuoc_pnh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if(dgv_dsthuoc_pnh.RowCount != 0)
-            {
-
-                string sodk = dgv_dsthuoc_pnh.CurrentRow.Cells["SODKPNH"].Value.ToString();
-                string tenThuoc = dgv_dsthuoc_pnh.CurrentRow.Cells["TENTHUOCPNH"].Value.ToString();
-                double gianhap = Convert.ToDouble(dgv_dsthuoc_pnh.CurrentRow.Cells["GIANHAPPNH"].Value);
-                int soluongnhap = 1;
-                DateTime hsd = DateTime.Now;
-
-                if (!dsthuoc_pnh.Contains(sodk))
-                {
-                    dsthuoc_pnh.Add(sodk);
-                    dataTable_pnh.Rows.Add(sodk, tenThuoc, gianhap, soluongnhap, hsd);
-                    dgv_phieunh.DataSource = dataTable_pnh;
-                    tinhTongGiaNhap();
-                    dgv_dsthuoc_pnh.CurrentRow.DefaultCellStyle.BackColor = Color.Aqua;
-                }
-            }
-        }
-
-        private void dgv_phieunh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if(dgv_phieunh.RowCount != 0)
-            {
-
-                string sodk = dgv_phieunh.CurrentRow.Cells["SODKPNH1"].Value.ToString();
-                dsthuoc_pnh.Remove(sodk);
-                dgv_phieunh.Rows.Remove(dgv_phieunh.CurrentRow);
-                ((DataTable)dgv_phieunh.DataSource).AcceptChanges();
-                tinhTongGiaNhap();
-                foreach (DataGridViewRow row in dgv_dsthuoc_pnh.Rows)
-                {
-                    if (row.Cells["SODKPNH"].Value.ToString() == sodk)
-                    {
-                        row.DefaultCellStyle.BackColor = Color.White;
-                    }
-                }
-            }
-        }
-
-        private void dgv_phieunh_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            tinhTongGiaNhap();
-        }
-        private void btn_lappnh_Click(object sender, EventArgs e) //
-        {
-            if(tb_tongtiennh.Text.ToString() != "") {
-                string maphieu = tb_maphieu.Text;
-                DateTime nl = Convert.ToDateTime(dtp_ngaynh.Value);
-                string ngaylap = nl.ToString("yyyy-MM-dd");
-                double tonggianhap = Convert.ToDouble(tb_tongtiennh.Text);
-                foreach (DataGridViewRow row in dgv_phieunh.Rows)
-                {
-                    if (row.Cells["SOLUONGNHAP"].Value.ToString() == "" || row.Cells["HSD"].Value.ToString() == "")
-                    {
-                        return;
-                    }
-                }
-                bool check = PhieuNhapHangBUS.Instance.insertPhieuNhapHang(maphieu, ngaylap, tonggianhap);
-                loadPhieuNhapHang();
-                if (check)
-                {
-                    insertKhoThuoc();
-                    disable();
-                    pnl_dspn.Visible = true;
-                    loadKhoThuoc();
-                    loadThuocBanHang();
-                }
-            }
-        }
         
-        private DateTimePicker dateTimePicker;
-        private void insertKhoThuoc()
-        {
-            string maphieu = tb_maphieu.Text;
-            foreach (DataGridViewRow row in dgv_phieunh.Rows)
-            {
-                string sodk = Convert.ToString(row.Cells["SODKPNH1"].Value);
-                int soluong = Convert.ToInt32(row.Cells["SOLUONGNHAP"].Value);
-                DateTime hsddt = Convert.ToDateTime(row.Cells["HSD"].Value);
-                string hsd = hsddt.ToString("yyyy-MM-dd");
-                bool check = KhoThuocBUS.Instance.insertKhoThuoc(sodk, maphieu, hsd, soluong);
-                bool check2 = ChiTietNhapHangBUS.Instance.insertChiTietNhapHang(maphieu, sodk, soluong);
-            }
-        }
-
-        private void dgv_phieunh_CellClick(object sender, DataGridViewCellEventArgs e) //
-        {
-            if (e.ColumnIndex == 4)
-            {
-                dateTimePicker = new DateTimePicker();
-                dgv_phieunh.Controls.Add(dateTimePicker);
-                dateTimePicker.Format = DateTimePickerFormat.Short;
-                Rectangle rectangle = dgv_phieunh.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
-                dateTimePicker.Size = new Size(rectangle.Width, rectangle.Height);
-                dateTimePicker.Location = new Point(rectangle.X, rectangle.Y);
-                dateTimePicker.CloseUp += new EventHandler(datetimepicker_closeup);
-                dateTimePicker.TextChanged += new EventHandler(datetimepicker_textchanged);
-                dateTimePicker.Visible = true;
-            }
-        }
-
-        private void datetimepicker_textchanged(object? sender, EventArgs e)
-        {
-            dgv_phieunh.CurrentCell.Value = dateTimePicker.Value.ToString();
-        }
-
-        private void datetimepicker_closeup(object? sender, EventArgs e)
-        {
-            dateTimePicker.Visible = false;
-        }
-
-        private void dgv_phieunh_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)  //
-        {
-            e.Control.KeyPress -= new KeyPressEventHandler(Soluong_KeyPress);
-            if (dgv_phieunh.CurrentCell.ColumnIndex == 3)
-            {
-                TextBox tb = e.Control as TextBox;
-                if (tb != null)
-                {
-                    tb.KeyPress += new KeyPressEventHandler(Soluong_KeyPress);
-                }
-            }
-        }
-
-        private void Soluong_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
         // END
 
         private void ToExcel(DataGridView dataGridView1, string fileName)
@@ -748,25 +801,7 @@ namespace DrugStore
             }
         }
 
-        private void btn_suancc_Click(object sender, EventArgs e)
-        {
-            if(dgv_ncc.RowCount > 0)
-            {
-
-                String mancc = dgv_ncc.CurrentRow.Cells["MANCC"].Value.ToString();
-                String tenncc = dgv_ncc.CurrentRow.Cells["TENNCC1"].Value.ToString();
-                String sdt = dgv_ncc.CurrentRow.Cells["SDTNCC"].Value.ToString();
-                String diachi = dgv_ncc.CurrentRow.Cells["DIACHINCC"].Value.ToString();
-                FAddNCC f = new FAddNCC(this, true, mancc, tenncc, sdt, diachi);
-                f.Show();
-            }
-        }
-
-        private void btn_themncc_Click(object sender, EventArgs e)
-        {
-            FAddNCC f = new FAddNCC(this);
-            f.Show();
-        }
+        
         private void formatDate(DataGridView dgv)
         {
             for (int i = 0; i < dgv.Rows.Count; i++)
@@ -825,7 +860,7 @@ namespace DrugStore
 
         private void pb_reload_dmt_Click(object sender, EventArgs e)
         {
-            dgv_dsthuoc.DataSource = drugList;
+            dgv_dsthuoc.DataSource = thuocList;
 
         }
 
@@ -834,14 +869,7 @@ namespace DrugStore
             exportExcel(dgv_ctpn);
         }
 
-        private void dgv_dspn_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if(dgv_dspn.Rows.Count != 0)
-            {
-                string maphieu = dgv_dspn.CurrentRow.Cells["MAPHIEU"].Value.ToString();
-                dgv_ctpn.DataSource = ChiTietNhapHangBUS.Instance.getChiTietNhapHang(maphieu);
-            }
-        }
+        
 
         private void tb_timkiemNH_TextChanged(object sender, EventArgs e)
         {
@@ -851,7 +879,7 @@ namespace DrugStore
                     dgv_dsthuoc_pnh.DataSource = BUS.ThuocBUS.Instance.timthuocNH(tb_timkiemNH.Text.ToString(), cbb_nccNH.SelectedValue.ToString());
             } else
             {
-                dgv_dsthuoc_pnh.DataSource = drugPNHList;
+                dgv_dsthuoc_pnh.DataSource = thuocPNHList;
 
             }
         }

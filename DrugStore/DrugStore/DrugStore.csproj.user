@@ -22,9 +22,6 @@
     <Compile Update="FThuocBanChay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="khothuoc.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Update="Loading.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -39,16 +39,16 @@ CREATE TABLE PhieuNhapHang
 GO
 CREATE TABLE ChiTietNhapHang
 (
-	MAPHIEU VARCHAR(10) FOREIGN KEY REFERENCES PhieuNhapHang(MAPHIEU),
-	SODK VARCHAR(20) FOREIGN KEY REFERENCES Thuoc(SODK), --Khoa ngoai den Thuoc nhung bi vuong
+	MAPHIEU VARCHAR(10),
+	SODK VARCHAR(20),
 	SOLUONGNHAP INT DEFAULT 1,
 	PRIMARY KEY(MAPHIEU, SODK)
 )
 GO
 CREATE TABLE KhoThuoc
 (
-	SODK VARCHAR(20) FOREIGN KEY REFERENCES Thuoc(SODK),
-	MAPHIEU VARCHAR(10) FOREIGN KEY REFERENCES PhieuNhapHang(MAPHIEU),
+	SODK VARCHAR(20),
+	MAPHIEU VARCHAR(10),
 	HSD DATE NOT NULL,
 	SOLUONG INT DEFAULT 1,
 	PRIMARY KEY(SODK, MAPHIEU)
@@ -65,8 +65,8 @@ GO
 CREATE TABLE HoaDon
 (
 	MAHD VARCHAR(10) PRIMARY KEY,
-	SDT VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(SDT),
-	SDTNV VARCHAR(20) FOREIGN KEY REFERENCES NhanVien(SDT),
+	SDT VARCHAR(10),
+	SDTNV VARCHAR(20),
 	NGAYXUAT DATE DEFAULT GETDATE(),
 	TONGTIEN FLOAT NOT NULL,
 )
@@ -74,14 +74,125 @@ CREATE TABLE HoaDon
 GO
 CREATE TABLE ChiTietHoaDon
 (
-	MAHD VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MAHD),
-	SODK VARCHAR(20)  FOREIGN KEY REFERENCES Thuoc(SODK), --Khoa ngoai den Thuoc nhung bi vuong
+	MAHD VARCHAR(10),
+	SODK VARCHAR(20),
 	SOLUONGBAN INT DEFAULT 1,
 	PRIMARY KEY(MAHD, SODK)
 )
 GO
 
 
+-- TRIGGERS
+go
+CREATE TRIGGER trg_xoancc ON NhaCungCap
+FOR DELETE
+AS
+BEGIN
+	declare @mancc varchar(10)
+	set @mancc = (select MANCC from deleted)
+	delete from Thuoc where MANCC = @mancc
+END
+go
+
+CREATE TRIGGER trg_xoathuoc ON Thuoc
+FOR DELETE
+AS
+BEGIN
+	declare @sodk varchar(20)
+	
+	delete from KhoThuoc where SODK in (select SODK from deleted)
+END
+
+--Login
+GO
+CREATE PROC proc_Login @sodt VARCHAR(20), @pass VARCHAR(30)
+AS
+BEGIN
+	SELECT * FROM NhanVien WHERE SDT = @sodt AND PASS = @pass
+END
+
+go
+create proc proc_themKH @sdt varchar(10), @tenkh nvarchar(50)
+as
+	insert into KhachHang values(@sdt,@tenkh,0);
+
+
+
+--Them phieu nhap hang
+go
+create function func_taoMaPhieu()
+returns varchar(10)
+as
+begin
+	declare @date date, @date_string varchar(10), @maphieu varchar(11), @num int, @ma varchar(10)
+	set @date = GETDATE()
+	set @date_string = CONVERT(varchar(10),@date,111)
+	set @date_string = RIGHT(@date_string, 8)
+	set @date_string = REPLACE(@date_string,'/','')
+	set @ma = 'N' + @date_string
+	if EXISTS(select top 1 MAPHIEU from PhieuNhapHang where LEFT(MAPHIEU,7) = @ma order by MAPHIEU desc)
+	begin
+		set @maphieu = (select top 1 MAPHIEU from PhieuNhapHang where LEFT(MAPHIEU,7) = @ma order by MAPHIEU desc)
+		set @num = CAST(RIGHT(@maphieu,3) as int) + 1
+		if (@num < 10)
+			set @ma = @ma + '00' + CAST(@num as varchar)
+		else
+		begin
+			if (@num < 100)
+				set @ma = @ma + '0' + CAST(@num as varchar)
+			else
+				set @ma = @ma + CAST(@num as varchar)
+		end
+	end
+	else
+		set @ma = @ma + '001'
+	return @ma
+end
+
+
+go
+
+
+
+go
+create function func_taoMaHoaDon()
+returns varchar(10)
+as
+begin
+	declare @date date, @date_string varchar(10), @mahd varchar(10), @num int, @ma varchar(10)
+	set @date = GETDATE()
+	set @date_string = CONVERT(varchar(10),@date,111)
+	set @date_string = RIGHT(@date_string, 8)
+	set @date_string = REPLACE(@date_string,'/','')
+	set @ma = 'X' + @date_string
+	if EXISTS((select top 1 MAHD from HoaDon where LEFT(MAHD,7) = @ma order by MAHD desc))
+	begin
+		set @mahd = (select top 1 MAHD from HoaDon where LEFT(MAHD,7) = @ma order by MAHD desc)
+		set @num = CAST(RIGHT(@mahd,3) as int) + 1
+		if (@num < 10)
+			set @ma = @ma + '00' + CAST(@num as varchar)
+		else
+		begin
+			if (@num < 100)
+				set @ma = @ma + '0' + CAST(@num as varchar)
+			else
+				set @ma = @ma + CAST(@num as varchar)
+		end
+	end
+	else
+		set @ma = @ma + '001'
+	return @ma
+end
+
+
+go
+
+
+exec dbo.proc_themKH '0123456789' , N'Dung'
+exec dbo.proc_themKH '0246812345' , N'Khoa'
+exec dbo.proc_themKH '0345216798' , N'Huy'
+exec dbo.proc_themKH '0123283242' , N'Thảo'
+exec dbo.proc_themKH '0830127462' , N'Ân'
 
 
 
@@ -191,176 +302,3 @@ insert into Thuoc values('VD-24784-16', 'NCC6',N'Ospamox 250 mg', N'Amoxicilin (
 insert into Thuoc values('VD-24782-16', 'NCC6',N'Chlorpheniramine maleate 4mg', N'Clorpheniramin maleat-4mg', N'Viên', N'Hộp 10 vỉ x 20 viên', 1510, 1510*1.1)
 
 insert into Thuoc values('VD-24786-16', 'NCC6',N'Standacillin 500 mg', N'Ampicilin (dưới dạng Ampicilin trihydrat)', N'Viên', N'Hộp 100 vỉ x 10 viên', 2000, 2000*1.1)
--------------------------------
---       Procedure           --
--------------------------------
-
-
-
-
---Login
-GO
-CREATE PROC proc_Login @sodt VARCHAR(20), @pass VARCHAR(30)
-AS
-BEGIN
-	SELECT * FROM NhanVien WHERE SDT = @sodt AND PASS = @pass
-END
-
-
-
---Them thuoc vao danh muc thuoc
-go
---DROP PROC proc_themThuoc
-CREATE PROC proc_themThuoc @sodk VARCHAR(20), @mancc VARCHAR(10), @tenthuoc NVARCHAR(100), @hoatchat NVARCHAR(100), @donvitinh NVARCHAR(30), @quycachdonggoi NVARCHAR(100), @gianhap FLOAT, @giaban FLOAT
-AS
-begin
-	insert into Thuoc values(@sodk,@mancc,@tenthuoc,@hoatchat,@donvitinh,@quycachdonggoi,@gianhap,@giaban)
-end
-
---Xoa thuoc khoi danh muc thuoc
-go
-create proc proc_xoaThuoc @sodk varchar(20)
-as
-begin
-	declare @c1 int, @c2 int, @c3 int
-	set @c1 = (select COUNT(*) from ChiTietNhapHang where SODK = @sodk)
-	set @c2 = (select COUNT(*) from ChiTietHoaDon where SODK = @sodk)
-	set @c3 = (select COUNT(*) from KhoThuoc where SODK = @sodk)
-	if (@c1 = 0 and @c2 = 0 and @c3 = 0)
-		delete from ChiTietNhapHang where SODK = @sodk
-end
-
---Sua thong tin thuoc
-
-
---Them nha cung cap
---go
---create proc proc_themNCC @mancc varchar(10), @tenncc varchar(100)
---as
---	insert into NhaCungCap values(@mancc,@tenncc)
-
---Xoa nha cung cap
-
---Sua nha cung cap
-
---Them khach hang
-go
-create proc proc_themKH @sdt varchar(10), @tenkh nvarchar(50)
-as
-	insert into KhachHang values(@sdt,@tenkh,0);
-
---cong diem
-go
-create proc proc_congDiem @sdt varchar(10), @diem int
-as
-	update KhachHang set TICHDIEM = TICHDIEM + @diem
-
---Sua khach hang
-
---Xoa khach hang
-
---Them phieu nhap hang
-go
-create function func_taoMaPhieu()
-returns varchar(10)
-as
-begin
-	declare @date date, @date_string varchar(10), @maphieu varchar(11), @num int, @ma varchar(10)
-	set @date = GETDATE()
-	set @date_string = CONVERT(varchar(10),@date,111)
-	set @date_string = RIGHT(@date_string, 8)
-	set @date_string = REPLACE(@date_string,'/','')
-	set @ma = 'N' + @date_string
-	if EXISTS(select top 1 MAPHIEU from PhieuNhapHang where LEFT(MAPHIEU,7) = @ma order by MAPHIEU desc)
-	begin
-		set @maphieu = (select top 1 MAPHIEU from PhieuNhapHang where LEFT(MAPHIEU,7) = @ma order by MAPHIEU desc)
-		set @num = CAST(RIGHT(@maphieu,3) as int) + 1
-		if (@num < 10)
-			set @ma = @ma + '00' + CAST(@num as varchar)
-		else
-		begin
-			if (@num < 100)
-				set @ma = @ma + '0' + CAST(@num as varchar)
-			else
-				set @ma = @ma + CAST(@num as varchar)
-		end
-	end
-	else
-		set @ma = @ma + '001'
-	return @ma
-end
-
-
-go
-
-
-
-go
-create function func_taoMaHoaDon()
-returns varchar(10)
-as
-begin
-	declare @date date, @date_string varchar(10), @mahd varchar(10), @num int, @ma varchar(10)
-	set @date = GETDATE()
-	set @date_string = CONVERT(varchar(10),@date,111)
-	set @date_string = RIGHT(@date_string, 8)
-	set @date_string = REPLACE(@date_string,'/','')
-	set @ma = 'X' + @date_string
-	if EXISTS((select top 1 MAHD from HoaDon where LEFT(MAHD,7) = @ma order by MAHD desc))
-	begin
-		set @mahd = (select top 1 MAHD from HoaDon where LEFT(MAHD,7) = @ma order by MAHD desc)
-		set @num = CAST(RIGHT(@mahd,3) as int) + 1
-		if (@num < 10)
-			set @ma = @ma + '00' + CAST(@num as varchar)
-		else
-		begin
-			if (@num < 100)
-				set @ma = @ma + '0' + CAST(@num as varchar)
-			else
-				set @ma = @ma + CAST(@num as varchar)
-		end
-	end
-	else
-		set @ma = @ma + '001'
-	return @ma
-end
-
-
-go
---create proc proc_themHoaDon @sdt varchar(10), @ngayxuat date
---as
-	--insert into HoaDon values(dbo.func_taoMaHoaDon(),@sdt,@ngayxuat,null)
-
---Xoa hoa don
-
---Sua hoa don
-
---Them chi tiet hoa don
-go
-create proc proc_themCTHD @mahd varchar(10), @sodk varchar(20), @soluongban int
-as
-	insert into ChiTietHoaDon values(@mahd,@sodk,@soluongban)
-
---Xoa chi tiet hoa don
-
---Sua chi tiet hoa don
-
---Tinh tong tien hoa don
-go
-create proc proc_tongTienHoaDon @mahd varchar(10)
-as
-begin
-	declare @tongtien float
-	set @tongtien = (select SUM(Thuoc.GIANHAP*cthd.SOLUONGBAN) from Thuoc join ChiTietHoaDon cthd on Thuoc.SODK = cthd.SODK where cthd.MAHD = @mahd)
-	update HoaDon set TONGTIEN = @tongtien where MAHD = @mahd
-end
-
-go
-
-exec dbo.proc_themKH '0123456789' , N'Dung'
-exec dbo.proc_themKH '0246812345' , N'Khoa'
-exec dbo.proc_themKH '0345216798' , N'Huy'
-exec dbo.proc_themKH '0123283242' , N'Thảo'
-exec dbo.proc_themKH '0830127462' , N'Ân'
-
-
