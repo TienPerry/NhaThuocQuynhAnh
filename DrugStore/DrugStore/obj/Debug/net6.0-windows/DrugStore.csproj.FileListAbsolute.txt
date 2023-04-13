@@ -581,7 +581,6 @@ D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\Interop
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.csproj.ResolveComReference.cache
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FAddKhachHang.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FAddNCC.resources
-D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FAddNV.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FAddThuoc.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FHomePage.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FLogin.resources

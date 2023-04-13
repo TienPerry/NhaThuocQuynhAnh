@@ -88,20 +88,14 @@ namespace DrugStore
             this.ActiveControl = null;
             String sdt = tb_phone.Text.ToString();
             String pass = tb_pass.Text.ToString();
-            NhanVien nv = null;
-            nv = NhanVienBUS.Instance.checkAccount(sdt, pass);
+            TaiKhoan nv = null;
+            nv = TaiKhoanBUS.Instance.checkAccount(sdt, pass);
             if (nv != null)
             {
                 
                 this.Hide();
                 Loading f;
-                if (sdt=="admin")
-                {
-                   f = new Loading(true, sdt);
-                } else
-                {
-                    f = new Loading(false, sdt);
-                }
+                f = new Loading();
                 f.Show();
             }
             else

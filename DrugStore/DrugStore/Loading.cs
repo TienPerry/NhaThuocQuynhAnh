@@ -12,13 +12,11 @@ namespace DrugStore
 {
     public partial class Loading : Form
     {
-        private bool isAdmin;
-        private string sdt;
-        public Loading(bool isAdmin, string sdt)
+        
+        public Loading()
         {
             InitializeComponent();
-            this.isAdmin = isAdmin;
-            this.sdt = sdt;
+            
         }
 
         private void Loading_Load(object sender, EventArgs e)
@@ -31,7 +29,7 @@ namespace DrugStore
             progressBar.Increment(10);
             if(progressBar.Value >= 100)
             {
-                FHomePage f = new FHomePage(sdt, isAdmin);
+                FHomePage f = new FHomePage();
                 f.Show();
                 this.Close();
             }

@@ -7,9 +7,6 @@
     <Compile Update="FAddNCC.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FAddNV.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="FAddThuoc.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -32,9 +32,9 @@ namespace DAO
         {
             return DataProvider.Instance.ExecuteQuery("SELECT * FROM HoaDon WHERE NGAYXUAT BETWEEN @date1 AND @date2", new object[] { date1, date2 });
         }
-        public bool insertHoaDon(String mahd, String sdt, String sdtStaff, String ngayxuat, double tongtien)
+        public bool insertHoaDon(String mahd, String sdt, String ngayxuat, double tongtien)
         {
-            String query = string.Format("INSERT INTO HoaDon VALUES('{0}', '{1}', '{2}', '{3}', {4})", mahd, sdt, sdtStaff, ngayxuat, tongtien);
+            String query = string.Format("INSERT INTO HoaDon VALUES('{0}', '{1}', '{2}', '{3}')", mahd, sdt, ngayxuat, tongtien);
             return DataProvider.Instance.ExecuteNonQuery(query) > 0;
         }
         public string getMaHoaDon()

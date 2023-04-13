@@ -14,7 +14,7 @@ GO
 CREATE TABLE KhachHang
 (
 	SDT VARCHAR(10) PRIMARY KEY,
-	TENKH NVARCHAR(50) NOT NULL,
+	TENKH NVARCHAR(50),
 	TICHDIEM FLOAT DEFAULT 0
 )
 GO
@@ -54,11 +54,9 @@ CREATE TABLE KhoThuoc
 	PRIMARY KEY(SODK, MAPHIEU)
 )
 GO
-CREATE TABLE NhanVien
+CREATE TABLE TaiKhoan
 (
 	SDT VARCHAR(20) PRIMARY KEY,
-	DIACHI NVARCHAR(100),
-	HOTEN NVARCHAR(50) NOT NULL,
 	PASS VARCHAR(30) NOT NULL
 )
 GO
@@ -66,7 +64,6 @@ CREATE TABLE HoaDon
 (
 	MAHD VARCHAR(10) PRIMARY KEY,
 	SDT VARCHAR(10),
-	SDTNV VARCHAR(20),
 	NGAYXUAT DATE DEFAULT GETDATE(),
 	TONGTIEN FLOAT NOT NULL,
 )
@@ -81,6 +78,7 @@ CREATE TABLE ChiTietHoaDon
 )
 GO
 
+insert into TaiKhoan values('admin', 'admin123')
 
 -- TRIGGERS
 go
@@ -98,9 +96,16 @@ CREATE TRIGGER trg_xoathuoc ON Thuoc
 FOR DELETE
 AS
 BEGIN
-	declare @sodk varchar(20)
 	
 	delete from KhoThuoc where SODK in (select SODK from deleted)
+END
+
+go
+CREATE TRIGGER trg_xoakhachhang ON KhachHang
+FOR DELETE
+AS
+BEGIN
+	delete from HoaDon where SDT = (select SDT from deleted)
 END
 
 --Login
@@ -108,7 +113,7 @@ GO
 CREATE PROC proc_Login @sodt VARCHAR(20), @pass VARCHAR(30)
 AS
 BEGIN
-	SELECT * FROM NhanVien WHERE SDT = @sodt AND PASS = @pass
+	SELECT * FROM TaiKhoan WHERE SDT = @sodt AND PASS = @pass
 END
 
 go
@@ -196,14 +201,14 @@ exec dbo.proc_themKH '0830127462' , N'Ân'
 
 
 
-insert into NhanVien values('admin', N'TpHCM', N'Admin', 'admin123')
-insert into NhanVien values('0907640644', N'TpHCM', N'Trương Tuấn Tú', 'tuantu123')
-insert into NhanVien values('0122657847', N'TpHCM', N'Lê Thúy Vân', 'thuyvan123')
-insert into NhanVien values('0987635213', N'Sóc Trăng', N'Hà Như Ngọc', 'hanhungoc123')
-insert into NhanVien values('0923178132', N'TpHCM', N'Trương Tiểu Tiểu', 'tieutieu123')
-insert into NhanVien values('0123213212', N'Cà Mau', N'Võ Văn Cừ', 'vancu123')
-insert into NhanVien values('0923713156', N'Cần Thơ', N'Lý Hào Nam', 'haonam123')
-insert into NhanVien values('0231632718', N'TpHCM', N'Kiều Minh Tú', 'minhtu123')
+
+--insert into NhanVien values('0907640644', N'TpHCM', N'Trương Tuấn Tú', 'tuantu123')
+--insert into NhanVien values('0122657847', N'TpHCM', N'Lê Thúy Vân', 'thuyvan123')
+--insert into NhanVien values('0987635213', N'Sóc Trăng', N'Hà Như Ngọc', 'hanhungoc123')
+--insert into NhanVien values('0923178132', N'TpHCM', N'Trương Tiểu Tiểu', 'tieutieu123')
+--insert into NhanVien values('0123213212', N'Cà Mau', N'Võ Văn Cừ', 'vancu123')
+--insert into NhanVien values('0923713156', N'Cần Thơ', N'Lý Hào Nam', 'haonam123')
+--insert into NhanVien values('0231632718', N'TpHCM', N'Kiều Minh Tú', 'minhtu123')
 
 
 insert into NhaCungCap values('NCC1', N'Gujarat Liqui Pharmacaps (P) Ltd', '031731819', N'Ấn Độ')

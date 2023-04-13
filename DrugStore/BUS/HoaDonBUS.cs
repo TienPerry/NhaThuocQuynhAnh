@@ -39,13 +39,13 @@ namespace BUS
                 return null;
             return DAO.HoaDonDAO.Instance.getAllHoaDonTheoNgay(date1, date2);
         }
-        public bool insertHoaDon(String mahd, String sdt, String sdtStaff, String ngayxuat, double tongtien)
+        public bool insertHoaDon(String mahd, String sdt, String ngayxuat, double tongtien)
         {
             if(mahd == "" || sdt == "" || ngayxuat == "") 
             { 
                 return false; 
             }
-            return DAO.HoaDonDAO.Instance.insertHoaDon(mahd, sdt, sdtStaff, ngayxuat, tongtien);
+            return DAO.HoaDonDAO.Instance.insertHoaDon(mahd, sdt, ngayxuat, tongtien);
         }
         public string getMaHoaDon()
         {
