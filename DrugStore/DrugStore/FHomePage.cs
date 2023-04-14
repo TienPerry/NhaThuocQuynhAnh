@@ -59,7 +59,7 @@ namespace DrugStore
             pnl_ondmthuoc.Visible = false;
             pnl_onkhothuoc.Visible = false;
             pnl_onbcdoanhthu.Visible = false;
-            pnl_dshd_qlbh.Visible= false;
+            pnl_dshd.Visible= false;
         }
         // Đăng xuất
         private void btn_dangxuat_Click(object sender, EventArgs e)
@@ -218,7 +218,7 @@ namespace DrugStore
             pnl_onqlbh.Top = btn_qlbh.Top;
             disable();
             loadHoaDon();
-            pnl_dshd_qlbh.Visible = true;
+            pnl_dshd.Visible = true;
             pnl_onqlbh.Visible = true;
         }
 
@@ -360,6 +360,20 @@ namespace DrugStore
             }
         }
 
+        private void tb_timkiem_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_timkiem.Text != "")
+            {
+                string text_search = tb_timkiem.Text.ToString();
+                DataTable dt = ThuocBUS.Instance.timThuoc(text_search);
+                dgv_dsthuoc.DataSource = dt;
+            }
+            else
+            {
+                dgv_dsthuoc.DataSource = thuocList;
+            }
+        }
+
         //Kho thuốc
         private void btn_khothuoc_Click(object sender, EventArgs e)
         {
@@ -409,6 +423,19 @@ namespace DrugStore
             dataTable_pnh.Columns.Add("SOLUONGNHAP");
             dataTable_pnh.Columns.Add("HSD");
             dgv_phieunh.DataSource = dataTable_pnh;
+        }
+        private void tb_timkiemNH_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_timkiemNH.Text.ToString() != "")
+            {
+                if (cbb_nccNH.SelectedValue != null)
+                    dgv_dsthuoc_pnh.DataSource = BUS.ThuocBUS.Instance.timthuocNH(tb_timkiemNH.Text.ToString(), cbb_nccNH.SelectedValue.ToString());
+            }
+            else
+            {
+                dgv_dsthuoc_pnh.DataSource = thuocPNHList;
+
+            }
         }
         private void btn_themthuoc_lappnh_Click(object sender, EventArgs e)
         {
@@ -530,7 +557,7 @@ namespace DrugStore
                     loadPhieuNhapHang();
                     pnl_dspn.Visible = true;
                     loadKhoThuoc();
-                    loadThuocBanHang();
+                    
                 }
             }
         }
@@ -595,297 +622,7 @@ namespace DrugStore
             }
         }
 
-        
-
-        private void btn_lapHoaDon_Click(object sender, EventArgs e)
-        {
-            pnl_laphoadon.Visible = true;
-        }
-
-        private void tb_timkiem_TextChanged(object sender, EventArgs e)
-        {
-            if (tb_timkiem.Text != "")
-            {
-                string text_search = tb_timkiem.Text.ToString();
-                DataTable dt = ThuocBUS.Instance.timThuoc(text_search);
-                dgv_dsthuoc.DataSource = dt;
-            }
-            else
-            {
-                dgv_dsthuoc.DataSource = thuocList;
-            }
-        }
-
-
-        private void ToExcel(DataGridView dataGridView1, string fileName)
-        {
-            //khai báo thư viện hỗ trợ Microsoft.Office.Interop.Excel
-            Microsoft.Office.Interop.Excel.Application excel;
-            Microsoft.Office.Interop.Excel.Workbook workbook;
-            Microsoft.Office.Interop.Excel.Worksheet worksheet;
-            try
-            {
-                //Tạo đối tượng COM.
-                excel = new Microsoft.Office.Interop.Excel.Application();
-                excel.Visible = false;
-                excel.DisplayAlerts = false;
-                //tạo mới một Workbooks bằng phương thức add()
-                workbook = excel.Workbooks.Add(Type.Missing);
-                worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Sheets["Sheet1"];
-                //đặt tên cho sheet
-                worksheet.Name = "Quản lý học sinh";
-                // export header trong DataGridView
-                for (int i = 0; i < dataGridView1.ColumnCount; i++)
-                {
-                    worksheet.Cells[1, i + 1] = dataGridView1.Columns[i].HeaderText;
-                }
-                // export nội dung trong DataGridView
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                {
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    {
-                        worksheet.Cells[i + 2, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
-                    }
-                }
-                worksheet.Columns.AutoFit();
-                // sử dụng phương thức SaveAs() để lưu workbook với filename
-                workbook.SaveAs(fileName);
-                //đóng workbook
-                workbook.Close();
-                excel.Quit();
-                MessageBox.Show("Xuất dữ liệu ra Excel thành công!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                workbook = null;
-                worksheet = null;
-            }
-        }
-        
-
-        
-        private void formatDate(DataGridView dgv)
-        {
-            for (int i = 0; i < dgv.Rows.Count; i++)
-            {
-                dgv.Rows[i].Cells[3].Value = (Convert.ToDateTime(dgv.Rows[i].Cells[3].Value.ToString())).ToString("dd/MM/yyyy");
-                //DateTime.ParseExact(dateInString, "M/d/yyyy", CultureInfo.InvariantCulture);
-            }
-        }
-        // Quản lý danh mục thuốc
-        private void btn_thuoc1t_Click(object sender, EventArgs e)
-        {
-            dgv_dsthuockt.DataSource = BUS.ThuocBUS.Instance.thongKeThuocTrongKho(0, 1);
-        }
-
-        private void btn_thuoc3t_Click(object sender, EventArgs e)
-        {
-            dgv_dsthuockt.DataSource = BUS.ThuocBUS.Instance.thongKeThuocTrongKho(0, 3);
-
-        }
-
-        private void btn_thuoc6t_Click(object sender, EventArgs e)
-        {
-            dgv_dsthuockt.DataSource = BUS.ThuocBUS.Instance.thongKeThuocTrongKho(0, 6);
-        }
-
-        private void btn_thuochet_Click(object sender, EventArgs e)
-        {
-            dgv_dsthuockt.DataSource = BUS.KhoThuocBUS.Instance.getThuocSapHetHan();
-
-        }
-
-        private void btn_khothuoc_exportExcel_Click(object sender, EventArgs e)
-        {
-            exportExcel(dgv_dsthuockt);
-        }
-
-        private void pb_reload_khothuoc_Click(object sender, EventArgs e)
-        {
-            dgv_dsthuockt.DataSource = khoThuocList;
-
-        }
-
-        private void tb_timkiemkt_TextChanged(object sender, EventArgs e)
-        {
-            if (tb_timkiemkt.Text != "")
-            {
-                string text_search = tb_timkiemkt.Text.ToString();
-                DataTable dt = ThuocBUS.Instance.timThuocTrongKho(text_search);
-                dgv_dsthuockt.DataSource = dt;
-            }
-            else
-            {
-                dgv_dsthuockt.DataSource = khoThuocList;
-
-            }
-        }
-
-        private void pb_reload_dmt_Click(object sender, EventArgs e)
-        {
-            dgv_dsthuoc.DataSource = thuocList;
-
-        }
-
-        private void btn_dspn_importExcel_Click(object sender, EventArgs e)
-        {
-            exportExcel(dgv_ctpn);
-        }
-
-        
-
-        private void tb_timkiemNH_TextChanged(object sender, EventArgs e)
-        {
-            if(tb_timkiemNH.Text.ToString() != "")
-            {
-                if (cbb_nccNH.SelectedValue != null)
-                    dgv_dsthuoc_pnh.DataSource = BUS.ThuocBUS.Instance.timthuocNH(tb_timkiemNH.Text.ToString(), cbb_nccNH.SelectedValue.ToString());
-            } else
-            {
-                dgv_dsthuoc_pnh.DataSource = thuocPNHList;
-
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // In
-        
-
-        private void btn_inphieunh_Click(object sender, EventArgs e)
-        {
-
-            
-            // Thiết lập các thông số cho bản in
-            printDocument1.DefaultPageSettings.Landscape = true;
-            printDocument1.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-
-            // Hiển thị hộp thoại Print Preview để xem trước bản in
-            PrintPreviewDialog printPreviewDialog1 = new PrintPreviewDialog();
-            printPreviewDialog1.Document = printDocument1;
-            
-
-            // In bản in
-            if (printPreviewDialog1.ShowDialog() == DialogResult.OK)
-            {
-                printDocument1.Print();
-            }
-        }
-
-        private void printDocument1_PrintPage_1(object sender, PrintPageEventArgs e)
-        {
-            // Khởi tạo biến để lưu trữ thông tin in hóa đơn
-            int x = 50;
-            int y = 50;
-            int rowheight = 0;
-            int columnwidth = 0;
-            String title = "PHIẾU NHẬP HÀNG";
-            Font titleFont = new Font("Arial", 16, FontStyle.Bold);
-            SizeF titleSize = e.Graphics.MeasureString(title, titleFont);
-            float titleX = e.PageBounds.Width / 2 - titleSize.Width / 2;
-            float titleY = y;
-
-            // Vẽ tiêu đề cho hóa đơn
-            e.Graphics.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
-            y += Convert.ToInt32(titleSize.Height + 50);
-
-            // Vẽ các tên cột của bảng dữ liệu
-            /*for (int i = 0; i < dgv_phieunh.Columns.Count; i++)
-            {
-                columnwidth = dgv_phieunh.Columns[i].Width;
-                 e.Graphics.FillRectangle(Brushes.LightGray, new System.Drawing.Rectangle(x, y, columnwidth, rowheight));
-                 e.Graphics.DrawRectangle(Pens.Black, new System.Drawing.Rectangle(x, y, columnwidth, rowheight));
-                 e.Graphics.DrawString(dgv_phieunh.Columns[i].HeaderText, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight));
-                 x += columnwidth;
-                
-                columnwidth = dgv_phieunh.Columns[i].Width;
-                e.Graphics.FillRectangle(Brushes.LightGray, new RectangleF(x, y, columnwidth, rowheight));
-                e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x, y, columnwidth, rowheight));
-                string columnName = dgv_phieunh.Columns[i].HeaderText;
-                Font columnFont = new Font("Arial", 12, FontStyle.Bold);
-                SizeF columnSize = e.Graphics.MeasureString(columnName, columnFont);
-                float columnX = x + columnwidth / 2 - columnSize.Width / 2;
-                float columnY = y + rowheight / 2 - columnSize.Height / 2;
-                e.Graphics.DrawString(columnName, columnFont, Brushes.Black, new PointF(columnX, columnY));
-                x += columnwidth;
-            } 
-
-            // Vẽ dữ liệu cho từng hàng trong bảng
-            x = 50;
-            y += 30;
-            for (int i = 0; i < dgv_phieunh.Rows.Count; i++)
-            {
-                rowheight = dgv_phieunh.Rows[i].Height;
-                for (int j = 0; j < dgv_phieunh.Columns.Count; j++)
-                {
-                    columnwidth = dgv_phieunh.Columns[j].Width;
-                    e.Graphics.DrawRectangle(Pens.Black, new System.Drawing.Rectangle(x, y, columnwidth, rowheight));
-                    e.Graphics.DrawString(dgv_phieunh.Rows[i].Cells[j].FormattedValue.ToString(), new System.Drawing.Font("Arial", 12), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight));
-                    x += columnwidth;
-                }
-                x = 50;
-                y += rowheight;
-            }
-            */
-            // tính tổng chiều rộng của các cột
-            int totalColumnWidth = 0;
-            for (int i = 0; i < dgv_phieunh.Columns.Count; i++)
-            {
-                totalColumnWidth += dgv_phieunh.Columns[i].Width;
-            }
-
-            // tính tỉ lệ thu nhỏ để lấp đầy chiều ngang trên trang in
-            float scaleFactor = (float)e.MarginBounds.Width / (float)totalColumnWidth;
-
-            // Vẽ các tên cột của bảng dữ liệu
-            for (int i = 0; i < dgv_phieunh.Columns.Count; i++)
-            {
-                columnwidth = (int)(dgv_phieunh.Columns[i].Width * scaleFactor);
-                e.Graphics.FillRectangle(Brushes.LightGray, new Rectangle(x, y, columnwidth, rowheight));
-                e.Graphics.DrawRectangle(new Pen(Brushes.Black, 2), new Rectangle(x, y, columnwidth, rowheight));
-                e.Graphics.DrawString(dgv_phieunh.Columns[i].HeaderText, new Font("Arial", 12, FontStyle.Bold), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-                x += columnwidth;
-            }
-
-            // Vẽ dữ liệu cho từng hàng trong bảng
-            x = 50;
-            y += 30;
-            for (int i = 0; i < dgv_phieunh.Rows.Count; i++)
-            {
-                rowheight = dgv_phieunh.Rows[i].Height;
-                for (int j = 0; j < dgv_phieunh.Columns.Count; j++)
-                {
-                    columnwidth = (int)(dgv_phieunh.Columns[j].Width * scaleFactor);
-                    e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x, y, columnwidth, rowheight));
-                    e.Graphics.DrawString(dgv_phieunh.Rows[i].Cells[j].FormattedValue.ToString(), new Font("Arial", 12), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-                    x += columnwidth;
-                }
-                x = 50;
-                y += rowheight;
-            }
-        }
-
+        // Quản lý bán hàng
         private void btn_export_cthd_Click(object sender, EventArgs e)
         {
             exportExcel(dgv_cthd);
@@ -896,7 +633,7 @@ namespace DrugStore
             pnl_onqlbh.Height = btn_qlbh.Height;
             pnl_onqlbh.Top = btn_qlbh.Top;
             disable();
-            pnl_dshd_qlbh.Visible = true;
+            pnl_dshd.Visible = true;
             pnl_onqlbh.Visible = true;
         }
 
@@ -909,6 +646,7 @@ namespace DrugStore
             pnl_onqlbh.Height = btn_qlbh.Height;
             pnl_onqlbh.Top = btn_qlbh.Top;
             disable();
+            loadThuocBanHang();
             pnl_laphoadon.Visible = true;
             pnl_onqlbh.Visible = true;
             tb_maHoaDon.Text = BUS.HoaDonBUS.Instance.getMaHoaDon();
@@ -923,7 +661,7 @@ namespace DrugStore
 
         private void txtb_tienKhachDua_TextChanged(object sender, EventArgs e)
         {
-            if(txt_tongTien.Text != "" && txtb_tienKhachDua.Text != "")
+            if (txt_tongTien.Text != "" && txtb_tienKhachDua.Text != "")
                 txtb_tienTraLai.Text = (Convert.ToDouble(txtb_tienKhachDua.Text) - Convert.ToDouble(txt_tongTien.Text)).ToString();
         }
 
@@ -966,16 +704,17 @@ namespace DrugStore
                     bool checkKH = KhachHangBUS.Instance.insertKhachHang(sdtkh, tenkh);
                 }
                 bool check = HoaDonBUS.Instance.insertHoaDon(mahd, sdtkh, ngayxuat, tongtien);
-                loadHoaDon();
+                
                 if (check)
                 {
+                    loadHoaDon();
                     double diem = tongtien / 10000;
                     bool chechCongDiem = KhachHangBUS.Instance.updateDiem(sdtkh, diem);
-                    loadKhachHang();
+                    
                     insertChiTietHoaDon();
-                    loadThuocBanHang();
+                    
                     disable();
-                    pnl_dshd_qlbh.Visible = true;
+                    pnl_dshd.Visible = true;
                     tb_sdt_qlbh.Text = "";
                     tb_tenkh.Text = "";
                 }
@@ -1001,36 +740,10 @@ namespace DrugStore
             }
             loadKhoThuoc();
         }
-        void loadSoLuongVaTongTien(String date1, String date2)
-        {
-            string soluong = BUS.HoaDonBUS.Instance.getSoLuongHoaDonTheoNgay(date1, date2).ToString();
-            string tongtien = BUS.HoaDonBUS.Instance.getTongTien(date1, date2).ToString();
-            tb_slhd.Text = soluong;
-            tb_tongdt.Text = tongtien;
-        }
-        private void dtp_ngaykt_ValueChanged(object sender, EventArgs e)
-        {
-            DateTime dt1 = Convert.ToDateTime(dtp_ngaybd.Value);
-            string date1 = dt1.ToString("yyyy-MM-dd");
-            DateTime dt2 = Convert.ToDateTime(dtp_ngaykt.Value);
-            string date2 = dt2.ToString("yyyy-MM-dd");
-            loadBaoCaoHD(date1, date2);
-            loadSoLuongVaTongTien(date1, date2);
-        }
-
-        private void btn_baocao_Click(object sender, EventArgs e)
-        {
-            DateTime dt1 = Convert.ToDateTime(dtp_ngaybd.Value);
-            string date1 = dt1.ToString("yyyy-MM-dd");
-            DateTime dt2 = Convert.ToDateTime(dtp_ngaykt.Value);
-            string date2 = dt2.ToString("yyyy-MM-dd");
-            loadBaoCaoHD(date1, date2);
-            loadSoLuongVaTongTien(date1, date2);
-        }
 
         private void dgv_bh_hoaDon_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(dgv_bh_hoaDon.RowCount > 0)
+            if (dgv_bh_hoaDon.RowCount > 0)
             {
 
                 string sodk = dgv_bh_hoaDon.CurrentRow.Cells["SODK_HD"].Value.ToString();
@@ -1098,7 +811,7 @@ namespace DrugStore
 
         private void dgv_dshd_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(dgv_dshd.Rows.Count != 0)
+            if (dgv_dshd.Rows.Count != 0)
             {
 
                 string mahd = dgv_dshd.CurrentRow.Cells["MAHD"].Value.ToString();
@@ -1114,12 +827,12 @@ namespace DrugStore
         private void btn_thuocbanchay_Click(object sender, EventArgs e)
         {
             FThuocBanChay f = new FThuocBanChay();
-            f.Show();  
+            f.Show();
         }
 
         private void dgv_bh_danhMucThuoc_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(dgv_bh_danhMucThuoc.RowCount > 0)
+            if (dgv_bh_danhMucThuoc.RowCount > 0)
             {
 
                 string sodk = dgv_bh_danhMucThuoc.CurrentRow.Cells["SODK_BH"].Value.ToString();
@@ -1138,6 +851,225 @@ namespace DrugStore
                 }
             }
         }
+
+
+
+        private void ToExcel(DataGridView dataGridView1, string fileName)
+        {
+            //khai báo thư viện hỗ trợ Microsoft.Office.Interop.Excel
+            Microsoft.Office.Interop.Excel.Application excel;
+            Microsoft.Office.Interop.Excel.Workbook workbook;
+            Microsoft.Office.Interop.Excel.Worksheet worksheet;
+            try
+            {
+                //Tạo đối tượng COM.
+                excel = new Microsoft.Office.Interop.Excel.Application();
+                excel.Visible = false;
+                excel.DisplayAlerts = false;
+                //tạo mới một Workbooks bằng phương thức add()
+                workbook = excel.Workbooks.Add(Type.Missing);
+                worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Sheets["Sheet1"];
+                //đặt tên cho sheet
+                worksheet.Name = "Quản lý học sinh";
+                // export header trong DataGridView
+                for (int i = 0; i < dataGridView1.ColumnCount; i++)
+                {
+                    worksheet.Cells[1, i + 1] = dataGridView1.Columns[i].HeaderText;
+                }
+                // export nội dung trong DataGridView
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        worksheet.Cells[i + 2, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                    }
+                }
+                worksheet.Columns.AutoFit();
+                // sử dụng phương thức SaveAs() để lưu workbook với filename
+                workbook.SaveAs(fileName);
+                //đóng workbook
+                workbook.Close();
+                excel.Quit();
+                MessageBox.Show("Xuất dữ liệu ra Excel thành công!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                workbook = null;
+                worksheet = null;
+            }
+        }
+        
+        // Quản lý danh mục thuốc
+        private void btn_thuoc1t_Click(object sender, EventArgs e)
+        {
+            dgv_dsthuockt.DataSource = BUS.ThuocBUS.Instance.thongKeThuocTrongKho(0, 1);
+        }
+
+        private void btn_thuoc3t_Click(object sender, EventArgs e)
+        {
+            dgv_dsthuockt.DataSource = BUS.ThuocBUS.Instance.thongKeThuocTrongKho(0, 3);
+
+        }
+
+        private void btn_thuoc6t_Click(object sender, EventArgs e)
+        {
+            dgv_dsthuockt.DataSource = BUS.ThuocBUS.Instance.thongKeThuocTrongKho(0, 6);
+        }
+
+        private void btn_thuochet_Click(object sender, EventArgs e)
+        {
+            dgv_dsthuockt.DataSource = BUS.KhoThuocBUS.Instance.getThuocSapHetHan();
+
+        }
+
+        private void btn_khothuoc_exportExcel_Click(object sender, EventArgs e)
+        {
+            exportExcel(dgv_dsthuockt);
+        }
+
+        private void pb_reload_khothuoc_Click(object sender, EventArgs e)
+        {
+            dgv_dsthuockt.DataSource = khoThuocList;
+
+        }
+
+        private void tb_timkiemkt_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_timkiemkt.Text != "")
+            {
+                string text_search = tb_timkiemkt.Text.ToString();
+                DataTable dt = ThuocBUS.Instance.timThuocTrongKho(text_search);
+                dgv_dsthuockt.DataSource = dt;
+            }
+            else
+            {
+                dgv_dsthuockt.DataSource = khoThuocList;
+
+            }
+        }
+
+        private void pb_reload_dmt_Click(object sender, EventArgs e)
+        {
+            dgv_dsthuoc.DataSource = thuocList;
+
+        }
+
+        private void btn_dspn_importExcel_Click(object sender, EventArgs e)
+        {
+            exportExcel(dgv_ctpn);
+        }
+
+        // Thống kê thuốc
+        void loadSoLuongVaTongTien(String date1, String date2)
+        {
+            string soluong = BUS.HoaDonBUS.Instance.getSoLuongHoaDonTheoNgay(date1, date2).ToString();
+            string tongtien = BUS.HoaDonBUS.Instance.getTongTien(date1, date2).ToString();
+            tb_slhd.Text = soluong;
+            tb_tongdt.Text = tongtien;
+        }
+        private void dtp_ngaykt_ValueChanged(object sender, EventArgs e)
+        {
+            DateTime dt1 = Convert.ToDateTime(dtp_ngaybd.Value);
+            string date1 = dt1.ToString("yyyy-MM-dd");
+            DateTime dt2 = Convert.ToDateTime(dtp_ngaykt.Value);
+            string date2 = dt2.ToString("yyyy-MM-dd");
+            loadBaoCaoHD(date1, date2);
+            loadSoLuongVaTongTien(date1, date2);
+        }
+
+        private void btn_baocao_Click(object sender, EventArgs e)
+        {
+            DateTime dt1 = Convert.ToDateTime(dtp_ngaybd.Value);
+            string date1 = dt1.ToString("yyyy-MM-dd");
+            DateTime dt2 = Convert.ToDateTime(dtp_ngaykt.Value);
+            string date2 = dt2.ToString("yyyy-MM-dd");
+            loadBaoCaoHD(date1, date2);
+            loadSoLuongVaTongTien(date1, date2);
+        }
+
+        // In
+
+        private void btn_inphieunh_Click(object sender, EventArgs e)
+        {
+
+            
+            // Thiết lập các thông số cho bản in
+            printDocument1.DefaultPageSettings.Landscape = true;
+            printDocument1.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
+
+            // Hiển thị hộp thoại Print Preview để xem trước bản in
+            PrintPreviewDialog printPreviewDialog1 = new PrintPreviewDialog();
+            printPreviewDialog1.Document = printDocument1;
+            
+
+            // In bản in
+            if (printPreviewDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDocument1.Print();
+            }
+        }
+
+        private void printDocument1_PrintPage_1(object sender, PrintPageEventArgs e)
+        {
+            // Khởi tạo biến để lưu trữ thông tin in hóa đơn
+            int x = 50;
+            int y = 50;
+            int rowheight = 0;
+            int columnwidth = 0;
+            String title = "PHIẾU NHẬP HÀNG";
+            Font titleFont = new Font("Arial", 16, FontStyle.Bold);
+            SizeF titleSize = e.Graphics.MeasureString(title, titleFont);
+            float titleX = e.PageBounds.Width / 2 - titleSize.Width / 2;
+            float titleY = y;
+
+            // Vẽ tiêu đề cho hóa đơn
+            e.Graphics.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
+            y += Convert.ToInt32(titleSize.Height + 50);
+
+            
+            // tính tổng chiều rộng của các cột
+            int totalColumnWidth = 0;
+            for (int i = 0; i < dgv_phieunh.Columns.Count; i++)
+            {
+                totalColumnWidth += dgv_phieunh.Columns[i].Width;
+            }
+
+            // tính tỉ lệ thu nhỏ để lấp đầy chiều ngang trên trang in
+            float scaleFactor = (float)e.MarginBounds.Width / (float)totalColumnWidth;
+
+            // Vẽ các tên cột của bảng dữ liệu
+            for (int i = 0; i < dgv_phieunh.Columns.Count; i++)
+            {
+                columnwidth = (int)(dgv_phieunh.Columns[i].Width * scaleFactor);
+                e.Graphics.FillRectangle(Brushes.LightGray, new Rectangle(x, y, columnwidth, rowheight));
+                e.Graphics.DrawRectangle(new Pen(Brushes.Black, 2), new Rectangle(x, y, columnwidth, rowheight));
+                e.Graphics.DrawString(dgv_phieunh.Columns[i].HeaderText, new Font("Arial", 12, FontStyle.Bold), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                x += columnwidth;
+            }
+
+            // Vẽ dữ liệu cho từng hàng trong bảng
+            x = 50;
+            y += 30;
+            for (int i = 0; i < dgv_phieunh.Rows.Count; i++)
+            {
+                rowheight = dgv_phieunh.Rows[i].Height;
+                for (int j = 0; j < dgv_phieunh.Columns.Count; j++)
+                {
+                    columnwidth = (int)(dgv_phieunh.Columns[j].Width * scaleFactor);
+                    e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x, y, columnwidth, rowheight));
+                    e.Graphics.DrawString(dgv_phieunh.Rows[i].Cells[j].FormattedValue.ToString(), new Font("Arial", 12), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight), new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                    x += columnwidth;
+                }
+                x = 50;
+                y += rowheight;
+            }
+        }
+
+        
 
         private void btn_inHoaDon_Click(object sender, EventArgs e)
         {
@@ -1264,9 +1196,9 @@ namespace DrugStore
                 lb_dshd.Text = "Danh sách hóa đơn";
                 dgv_dshd.Columns[0].HeaderText = "Mã hóa đơn";
                 dgv_dshd.Columns[1].HeaderText = "SDT Khách";
-                dgv_dshd.Columns[2].HeaderText = "SDT Nhân viên";
-                dgv_dshd.Columns[3].HeaderText = "Ngày xuất";
-                dgv_dshd.Columns[4].HeaderText = "Tổng tiền";
+                
+                dgv_dshd.Columns[2].HeaderText = "Ngày xuất";
+                dgv_dshd.Columns[3].HeaderText = "Tổng tiền";
                 lb_cthd.Text = "Chi tiết hóa đơn";
                 dgv_cthd.Columns[0].HeaderText = "Số đăng ký";
                 dgv_cthd.Columns[1].HeaderText = "Tên thuốc";
@@ -1409,9 +1341,9 @@ namespace DrugStore
                 lb_dshd.Text = "Bill list";
                 dgv_dshd.Columns[0].HeaderText = "Bill ID";
                 dgv_dshd.Columns[1].HeaderText = "Customer's Phone";
-                dgv_dshd.Columns[2].HeaderText = "Staff's Phone";
-                dgv_dshd.Columns[3].HeaderText = "Date";
-                dgv_dshd.Columns[4].HeaderText = "Total";
+                
+                dgv_dshd.Columns[2].HeaderText = "Date";
+                dgv_dshd.Columns[3].HeaderText = "Total";
                 lb_cthd.Text = "Bill details";
                 dgv_cthd.Columns[0].HeaderText = "Registration number";
                 dgv_cthd.Columns[1].HeaderText = "Name";
@@ -1455,8 +1387,6 @@ namespace DrugStore
             stateLanguage(isVN);
         }
 
-        
-
         private void tb_timKiemThuoc_TextChanged(object sender, EventArgs e)
         {
             String text = tb_timKiemThuoc.Text.ToString();
@@ -1484,44 +1414,7 @@ namespace DrugStore
             e.Graphics.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
             y += Convert.ToInt32(titleSize.Height + 50);
 
-            // Vẽ các tên cột của bảng dữ liệu
-            /*for (int i = 0; i < dgv_phieunh.Columns.Count; i++)
-            {
-                columnwidth = dgv_phieunh.Columns[i].Width;
-                 e.Graphics.FillRectangle(Brushes.LightGray, new System.Drawing.Rectangle(x, y, columnwidth, rowheight));
-                 e.Graphics.DrawRectangle(Pens.Black, new System.Drawing.Rectangle(x, y, columnwidth, rowheight));
-                 e.Graphics.DrawString(dgv_phieunh.Columns[i].HeaderText, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight));
-                 x += columnwidth;
-                
-                columnwidth = dgv_phieunh.Columns[i].Width;
-                e.Graphics.FillRectangle(Brushes.LightGray, new RectangleF(x, y, columnwidth, rowheight));
-                e.Graphics.DrawRectangle(Pens.Black, new Rectangle(x, y, columnwidth, rowheight));
-                string columnName = dgv_phieunh.Columns[i].HeaderText;
-                Font columnFont = new Font("Arial", 12, FontStyle.Bold);
-                SizeF columnSize = e.Graphics.MeasureString(columnName, columnFont);
-                float columnX = x + columnwidth / 2 - columnSize.Width / 2;
-                float columnY = y + rowheight / 2 - columnSize.Height / 2;
-                e.Graphics.DrawString(columnName, columnFont, Brushes.Black, new PointF(columnX, columnY));
-                x += columnwidth;
-            } 
-
-            // Vẽ dữ liệu cho từng hàng trong bảng
-            x = 50;
-            y += 30;
-            for (int i = 0; i < dgv_phieunh.Rows.Count; i++)
-            {
-                rowheight = dgv_phieunh.Rows[i].Height;
-                for (int j = 0; j < dgv_phieunh.Columns.Count; j++)
-                {
-                    columnwidth = dgv_phieunh.Columns[j].Width;
-                    e.Graphics.DrawRectangle(Pens.Black, new System.Drawing.Rectangle(x, y, columnwidth, rowheight));
-                    e.Graphics.DrawString(dgv_phieunh.Rows[i].Cells[j].FormattedValue.ToString(), new System.Drawing.Font("Arial", 12), Brushes.Black, new RectangleF(x, y, columnwidth, rowheight));
-                    x += columnwidth;
-                }
-                x = 50;
-                y += rowheight;
-            }
-            */
+            
             // tính tổng chiều rộng của các cột
             int totalColumnWidth = 0;
             for (int i = 0; i < dgv_bh_hoaDon.Columns.Count; i++)
@@ -1586,49 +1479,6 @@ namespace DrugStore
             txt_tongTien.Text = tongTien.ToString();
         }
 
-        /* private void btnSavePDF_Click(object sender, EventArgs e)
-         {
-             // Thiết lập các thông số cho bản in
-             printDocument1.DefaultPageSettings.Landscape = true;
-             printDocument1.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-
-             // Tạo một bản in tạm thời
-             MemoryStream stream = new MemoryStream();
-             printDocument1.PrintPage += new PrintPageEventHandler(printDocument1_PrintPage);
-             printDocument1.Print();
-
-             // Lưu bản in vào file PDF
-             PdfDocument pdf = new PdfDocument();
-             pdf.Info.Title = "Hóa đơn bán hàng";
-             PdfPage pdfPage = pdf.AddPage();
-             XGraphics gfx = XGraphics.FromPdfPage(pdfPage);
-             XImage image = XImage.FromStream(stream);
-             gfx.DrawImage(image, 0, 0);
-             string fileName = "invoice.pdf";
-             pdf.Save(fileName);
-             pdf.Close();
-         }
-        */
-
-       /* private void btn_inphieunh_Click(object sender, EventArgs e)
-        {
-
-
-            // Thiết lập các thông số cho bản in
-            printDocument1.DefaultPageSettings.Landscape = true;
-            printDocument1.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-
-            // Hiển thị hộp thoại Print Preview để xem trước bản in
-            PrintPreviewDialog printPreviewDialog1 = new PrintPreviewDialog();
-            printPreviewDialog1.Document = printDocument1;
-
-
-            // In bản in
-            if (printPreviewDialog1.ShowDialog() == DialogResult.OK)
-            {
-                printDocument1.Print();
-            }
-        }
-       */
+        
     }
 }
