@@ -583,7 +583,6 @@ D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugSto
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FAddNCC.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FAddThuoc.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FHomePage.resources
-D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FLogin.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FThuocBanChay.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.Loading.resources
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.Properties.Resources.resources
@@ -598,3 +597,5 @@ D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\refint\
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.pdb
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.genruntimeconfig.cache
 D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\ref\DrugStore.dll
+D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FDangNhap.resources
+D:\PhanMem\NhaThuocQuynhAnh\DrugStore\DrugStore\obj\Debug\net6.0-windows\DrugStore.FDoiMK.resources

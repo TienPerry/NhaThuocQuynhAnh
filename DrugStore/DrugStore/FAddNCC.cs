@@ -72,7 +72,7 @@ namespace DrugStore
 
         private void pb_huy_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
         }
 
         private void FAddNCC_Load(object sender, EventArgs e)

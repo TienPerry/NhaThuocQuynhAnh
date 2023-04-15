@@ -30,10 +30,10 @@ namespace DAO
         private TaiKhoanDAO()
         {
         }
-        public TaiKhoan checkAccount(String phone, String pass)    // Check whether exist an account of user to login
+        public TaiKhoan checkAccount(String pass)    // Check whether exist an account of user to login
         {
-            String query = "proc_Login @sodt , @pass";
-            DataTable data = DataProvider.Instance.ExecuteQuery(query, new object[] { phone, pass });
+            String query = "proc_Login @pass";
+            DataTable data = DataProvider.Instance.ExecuteQuery(query, new object[] { pass });
 
             if (data.Rows.Count == 0)
             {
@@ -42,6 +42,10 @@ namespace DAO
 
             return new TaiKhoan(data.Rows[0]);
         }
-        
+        public bool doiMatKhau(String pass, String newpass)
+        {
+            String query = string.Format("UPDATE TaiKhoan SET PASS = '{0}' WHERE PASS = '{1}'", newpass, pass);
+            return DataProvider.Instance.ExecuteNonQuery(query) > 0;
+        }
     }
 }

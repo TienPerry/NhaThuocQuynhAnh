@@ -30,11 +30,14 @@ namespace BUS
 
         }
         
-        public TaiKhoan checkAccount(String phone, String pass)
+        public TaiKhoan checkAccount(String pass)
         {
-            return DAO.TaiKhoanDAO.Instance.checkAccount(phone, pass);
+            return DAO.TaiKhoanDAO.Instance.checkAccount(pass);
         }
-        
+        public bool doiMatKhau(String pass, String newpass)
+        {
+            return DAO.TaiKhoanDAO.Instance.doiMatKhau(pass, newpass);
+        }
     }
 
 }

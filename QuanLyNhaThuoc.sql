@@ -56,7 +56,6 @@ CREATE TABLE KhoThuoc
 GO
 CREATE TABLE TaiKhoan
 (
-	SDT VARCHAR(20) PRIMARY KEY,
 	PASS VARCHAR(30) NOT NULL
 )
 GO
@@ -78,7 +77,7 @@ CREATE TABLE ChiTietHoaDon
 )
 GO
 
-insert into TaiKhoan values('admin', 'admin123')
+insert into TaiKhoan values('admin123')
 
 -- TRIGGERS
 go
@@ -110,10 +109,10 @@ END
 
 --Login
 GO
-CREATE PROC proc_Login @sodt VARCHAR(20), @pass VARCHAR(30)
+CREATE PROC proc_Login @pass VARCHAR(30)
 AS
 BEGIN
-	SELECT * FROM TaiKhoan WHERE SDT = @sodt AND PASS = @pass
+	SELECT * FROM TaiKhoan WHERE PASS = @pass
 END
 
 go

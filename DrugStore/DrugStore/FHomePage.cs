@@ -64,9 +64,10 @@ namespace DrugStore
         // Đăng xuất
         private void btn_dangxuat_Click(object sender, EventArgs e)
         {
-            this.Close();
-            FLogin f = new FLogin();
+            
+            FDangNhap f = new FDangNhap();
             f.Show();
+            this.Hide();
         }
 
         private void FHomePage_Load(object sender, EventArgs e)
@@ -1395,6 +1396,17 @@ namespace DrugStore
             else
                 dgv_bh_danhMucThuoc.DataSource = ThuocBanHangList;
 
+        }
+
+        private void FHomePage_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
+        private void btn_doimk_Click(object sender, EventArgs e)
+        {
+            FDoiMK fDoiMK = new FDoiMK();
+            fDoiMK.Show();
         }
 
         private void printDocument3_PrintPage(object sender, PrintPageEventArgs e)
