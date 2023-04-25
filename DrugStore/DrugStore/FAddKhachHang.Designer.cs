@@ -188,6 +188,7 @@
             this.Controls.Add(this.pb_btn_add);
             this.Controls.Add(this.pb_add_kh);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FAddKhachHang";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

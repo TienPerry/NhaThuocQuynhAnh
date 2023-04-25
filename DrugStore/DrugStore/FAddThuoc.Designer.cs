@@ -88,7 +88,7 @@
             this.pl_sodk.Location = new System.Drawing.Point(239, 136);
             this.pl_sodk.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_sodk.Name = "pl_sodk";
-            this.pl_sodk.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_sodk.Padding = new System.Windows.Forms.Padding(4);
             this.pl_sodk.Size = new System.Drawing.Size(234, 30);
             this.pl_sodk.TabIndex = 1;
             // 
@@ -99,7 +99,7 @@
             this.tb_sodk.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_sodk.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_sodk.Location = new System.Drawing.Point(0, 0);
-            this.tb_sodk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_sodk.Margin = new System.Windows.Forms.Padding(4);
             this.tb_sodk.Name = "tb_sodk";
             this.tb_sodk.Size = new System.Drawing.Size(234, 27);
             this.tb_sodk.TabIndex = 0;
@@ -111,7 +111,7 @@
             this.pl_tenthuoc.Location = new System.Drawing.Point(239, 235);
             this.pl_tenthuoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_tenthuoc.Name = "pl_tenthuoc";
-            this.pl_tenthuoc.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_tenthuoc.Padding = new System.Windows.Forms.Padding(4);
             this.pl_tenthuoc.Size = new System.Drawing.Size(234, 30);
             this.pl_tenthuoc.TabIndex = 3;
             // 
@@ -122,7 +122,7 @@
             this.tb_tenthuoc.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_tenthuoc.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_tenthuoc.Location = new System.Drawing.Point(0, 0);
-            this.tb_tenthuoc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_tenthuoc.Margin = new System.Windows.Forms.Padding(4);
             this.tb_tenthuoc.Name = "tb_tenthuoc";
             this.tb_tenthuoc.Size = new System.Drawing.Size(234, 27);
             this.tb_tenthuoc.TabIndex = 0;
@@ -134,7 +134,7 @@
             this.pl_hoatchat.Location = new System.Drawing.Point(629, 234);
             this.pl_hoatchat.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_hoatchat.Name = "pl_hoatchat";
-            this.pl_hoatchat.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_hoatchat.Padding = new System.Windows.Forms.Padding(4);
             this.pl_hoatchat.Size = new System.Drawing.Size(193, 30);
             this.pl_hoatchat.TabIndex = 4;
             // 
@@ -145,7 +145,7 @@
             this.tb_hoatchat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_hoatchat.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_hoatchat.Location = new System.Drawing.Point(0, 0);
-            this.tb_hoatchat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_hoatchat.Margin = new System.Windows.Forms.Padding(4);
             this.tb_hoatchat.Name = "tb_hoatchat";
             this.tb_hoatchat.Size = new System.Drawing.Size(193, 27);
             this.tb_hoatchat.TabIndex = 0;
@@ -157,7 +157,7 @@
             this.pl_dvt.Location = new System.Drawing.Point(239, 290);
             this.pl_dvt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_dvt.Name = "pl_dvt";
-            this.pl_dvt.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_dvt.Padding = new System.Windows.Forms.Padding(4);
             this.pl_dvt.Size = new System.Drawing.Size(140, 30);
             this.pl_dvt.TabIndex = 5;
             // 
@@ -168,7 +168,7 @@
             this.tb_dvt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_dvt.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_dvt.Location = new System.Drawing.Point(0, 0);
-            this.tb_dvt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_dvt.Margin = new System.Windows.Forms.Padding(4);
             this.tb_dvt.Name = "tb_dvt";
             this.tb_dvt.Size = new System.Drawing.Size(140, 27);
             this.tb_dvt.TabIndex = 0;
@@ -180,7 +180,7 @@
             this.pl_qcdg.Location = new System.Drawing.Point(629, 290);
             this.pl_qcdg.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_qcdg.Name = "pl_qcdg";
-            this.pl_qcdg.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_qcdg.Padding = new System.Windows.Forms.Padding(4);
             this.pl_qcdg.Size = new System.Drawing.Size(193, 30);
             this.pl_qcdg.TabIndex = 6;
             // 
@@ -191,7 +191,7 @@
             this.tb_qcdg.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_qcdg.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_qcdg.Location = new System.Drawing.Point(0, 0);
-            this.tb_qcdg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_qcdg.Margin = new System.Windows.Forms.Padding(4);
             this.tb_qcdg.Name = "tb_qcdg";
             this.tb_qcdg.Size = new System.Drawing.Size(193, 27);
             this.tb_qcdg.TabIndex = 0;
@@ -203,7 +203,7 @@
             this.pl_giaban.Location = new System.Drawing.Point(629, 341);
             this.pl_giaban.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_giaban.Name = "pl_giaban";
-            this.pl_giaban.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_giaban.Padding = new System.Windows.Forms.Padding(4);
             this.pl_giaban.Size = new System.Drawing.Size(193, 30);
             this.pl_giaban.TabIndex = 20;
             // 
@@ -214,7 +214,7 @@
             this.tb_giaban.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_giaban.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_giaban.Location = new System.Drawing.Point(0, 0);
-            this.tb_giaban.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_giaban.Margin = new System.Windows.Forms.Padding(4);
             this.tb_giaban.Name = "tb_giaban";
             this.tb_giaban.Size = new System.Drawing.Size(193, 27);
             this.tb_giaban.TabIndex = 0;
@@ -252,7 +252,7 @@
             this.pl_mancc.Location = new System.Drawing.Point(239, 187);
             this.pl_mancc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_mancc.Name = "pl_mancc";
-            this.pl_mancc.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_mancc.Padding = new System.Windows.Forms.Padding(4);
             this.pl_mancc.Size = new System.Drawing.Size(234, 30);
             this.pl_mancc.TabIndex = 2;
             // 
@@ -263,7 +263,7 @@
             this.tb_mancc.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_mancc.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_mancc.Location = new System.Drawing.Point(0, 0);
-            this.tb_mancc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_mancc.Margin = new System.Windows.Forms.Padding(4);
             this.tb_mancc.Name = "tb_mancc";
             this.tb_mancc.Size = new System.Drawing.Size(234, 27);
             this.tb_mancc.TabIndex = 0;
@@ -275,7 +275,7 @@
             this.pl_gianhap.Location = new System.Drawing.Point(239, 341);
             this.pl_gianhap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pl_gianhap.Name = "pl_gianhap";
-            this.pl_gianhap.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pl_gianhap.Padding = new System.Windows.Forms.Padding(4);
             this.pl_gianhap.Size = new System.Drawing.Size(193, 30);
             this.pl_gianhap.TabIndex = 7;
             // 
@@ -286,7 +286,7 @@
             this.tb_gianhap.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tb_gianhap.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_gianhap.Location = new System.Drawing.Point(0, 0);
-            this.tb_gianhap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tb_gianhap.Margin = new System.Windows.Forms.Padding(4);
             this.tb_gianhap.Name = "tb_gianhap";
             this.tb_gianhap.Size = new System.Drawing.Size(193, 27);
             this.tb_gianhap.TabIndex = 0;
@@ -412,6 +412,7 @@
             this.Controls.Add(this.pb_huy);
             this.Controls.Add(this.pb_thongtinthuoc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FAddThuoc";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

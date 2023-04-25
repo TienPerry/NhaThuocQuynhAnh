@@ -31,6 +31,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FThuocBanChay));
             this.dgv_dsthuocbanchay = new System.Windows.Forms.DataGridView();
             this.SODK = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TENTHUOC = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -82,7 +83,6 @@
             this.dgv_dsthuocbanchay.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_dsthuocbanchay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_dsthuocbanchay.Location = new System.Drawing.Point(0, 0);
-            this.dgv_dsthuocbanchay.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgv_dsthuocbanchay.Name = "dgv_dsthuocbanchay";
             this.dgv_dsthuocbanchay.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -97,7 +97,7 @@
             this.dgv_dsthuocbanchay.RowHeadersWidth = 51;
             this.dgv_dsthuocbanchay.RowTemplate.Height = 24;
             this.dgv_dsthuocbanchay.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_dsthuocbanchay.Size = new System.Drawing.Size(1284, 648);
+            this.dgv_dsthuocbanchay.Size = new System.Drawing.Size(1124, 486);
             this.dgv_dsthuocbanchay.TabIndex = 12;
             // 
             // SODK
@@ -161,8 +161,9 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1284, 71);
+            this.panel1.Size = new System.Drawing.Size(1124, 53);
             this.panel1.TabIndex = 13;
             // 
             // label1
@@ -172,7 +173,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1284, 71);
+            this.label1.Size = new System.Drawing.Size(1124, 53);
             this.label1.TabIndex = 0;
             this.label1.Text = "Thuốc bán chạy";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -181,18 +182,21 @@
             // 
             this.panel2.Controls.Add(this.dgv_dsthuocbanchay);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 71);
+            this.panel2.Location = new System.Drawing.Point(0, 53);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1284, 648);
+            this.panel2.Size = new System.Drawing.Size(1124, 486);
             this.panel2.TabIndex = 14;
             // 
             // FThuocBanChay
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1284, 719);
+            this.ClientSize = new System.Drawing.Size(1124, 539);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FThuocBanChay";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thuốc bán chạy";
