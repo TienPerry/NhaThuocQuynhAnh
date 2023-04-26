@@ -61,7 +61,7 @@
   <data name="pb_thongtinthuoc.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABVYAAAMACAYAAADPPjzCAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAADR0RVh0Q29tbWVudAB4cjpkOkRBRmR6a2FRN2prOjQ3LGo6NDUzODY2MDQ4Mjcs
+        vQAADr0BR/uQrQAAADR0RVh0Q29tbWVudAB4cjpkOkRBRmR6a2FRN2prOjQ3LGo6NDUzODY2MDQ4Mjcs
         dDoyMzA0MTgwNIEVkE0AAMOnSURBVHhe7P2HdxRn2oB573+yezZ8++3OGyZ5nMPYxoMzGGdjbExyIGOw
         yTkHk7PJIoicRBRCrdRCSCLZYBsnkUEG5zzvvboLGrdKd3VXdZC6pavO+R0PHao6lFrTl5566n8ZWVQu
         AAAAAAAAAAD/CKsAAAAAAAAAEBBhFQAAAAAAAAACIqwCAAAAAAAAQECEVQAAAAAAAAAIiLAKAAAAAAAA
@@ -903,7 +903,7 @@
   <data name="pb_luu.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAABACAYAAABfuzgrAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAJWFJREFUeF7tnQd0VVW6xzOWNy513nvWGQs6o45jF1DpnYQiJIQmBLCgOCJ2EBAV
+        vQAADr0BR/uQrQAAJWFJREFUeF7tnQd0VVW6xzOWNy513nvWGQs6o45jF1DpnYQiJIQmBLCgOCJ2EBAV
         BFRQVCxIJxVCSwIkpJDeGyX0moTeq+PC51PH+d737X3Oufvss8+559wkgG/NXetbYnJvluPcn7/v/7/7
         nAS5fQDAFTh34QyuPv19ccLWgzBvXQ1ML9kFk/O3wfs5W3C2wvhcPhPyaLbBBPzeBzQF29lMLOQzqWgH
         n+IdMLl4J0wu4fMhTekuNh+V0eyGj8u1qdgNUyr2wJRKPlPXVvNZVw2f0KyvgU/12VAL02iq+Hy2cS+f
@@ -1069,7 +1069,7 @@
   <data name="pb_huy.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMoAAABBCAYAAACQEjuzAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAJo9JREFUeF7tnQl0VeW1x/Ns+55V22pLW4vaOlTBEQlDSJgkIUAYlHlQn4ATPqQq
+        vQAADr0BR/uQrQAAJo9JREFUeF7tnQl0VeW1x/Ns+55V22pLW4vaOlTBEQlDSJgkIUAYlHlQn4ATPqQq
         dazKJDLKoEwJZCAJMwljIIxJSIBAQuZ5ICOzgEOXfW/VFvfb+zvD/c53vnPuuUMCXatnrb1g8W76Fnp/
         /vb/f79zboAnFwDchPNjnP+qvfLXDkmlzZPWnDr94pJjVeM/ySh78+PDJdM+Plw6fVpa6cc4M6enl34y
         Pb1s3vSMsoUzMsoWzDhSvhBn0czM8oU4i2ZlVSzE+WzW0YqFnxytnP/JMTYLZh+rnDv7eNUcnNmfZlfN

@@ -414,6 +414,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FAddThuoc";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Thông tin thuốc";
             this.Load += new System.EventHandler(this.FAddThuoc_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_thongtinthuoc)).EndInit();
             this.pl_sodk.ResumeLayout(false);

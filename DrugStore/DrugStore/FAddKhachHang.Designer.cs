@@ -192,7 +192,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FAddKhachHang";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FAddKhachHang";
+            this.Text = "Thông tin khách hàng";
             this.Load += new System.EventHandler(this.FAddKhachHang_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_add_kh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_btn_add)).EndInit();

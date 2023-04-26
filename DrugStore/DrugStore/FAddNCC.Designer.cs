@@ -249,7 +249,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FAddNCC";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AddNCC";
+            this.Text = "Thông tin nhà cung cấp";
             this.Load += new System.EventHandler(this.FAddNCC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pb_luu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_huy)).EndInit();
