@@ -570,9 +570,10 @@ namespace DrugStore
         }
         private void btn_lappnh_Click(object sender, EventArgs e) //
         {
-            if (tb_tongtiennh.Text.ToString() != "")
+            if (tb_tongtiennh.Text.ToString() != "" && cbb_nccNH.SelectedValue.ToString() != "")
             {
                 string maphieu = tb_maphieu.Text;
+                string mancc = cbb_nccNH.SelectedValue.ToString();
                 DateTime nl = Convert.ToDateTime(dtp_ngaynh.Value);
                 string ngaylap = nl.ToString("yyyy-MM-dd");
                 double tonggianhap = Convert.ToDouble(tb_tongtiennh.Text);
@@ -583,7 +584,7 @@ namespace DrugStore
                         return;
                     }
                 }
-                bool check = PhieuNhapHangBUS.Instance.insertPhieuNhapHang(maphieu, ngaylap, tonggianhap);
+                bool check = PhieuNhapHangBUS.Instance.insertPhieuNhapHang(maphieu, mancc, ngaylap, tonggianhap);
                 
                 if (check)
                 {

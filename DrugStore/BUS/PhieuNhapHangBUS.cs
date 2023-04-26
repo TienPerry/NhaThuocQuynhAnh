@@ -31,9 +31,9 @@ namespace BUS
         {
             return DAO.PhieuNhapHangDAO.Instance.getMaphieu();
         }
-        public bool insertPhieuNhapHang(String maphieu, string ngaylap, double tonggianhap)
+        public bool insertPhieuNhapHang(String maphieu, string mancc, string ngaylap, double tonggianhap)
         {
-            return DAO.PhieuNhapHangDAO.Instance.insertPhieuNhapHang(maphieu, ngaylap, tonggianhap);
+            return DAO.PhieuNhapHangDAO.Instance.insertPhieuNhapHang(maphieu, mancc, ngaylap, tonggianhap);
         }
     }
 }

@@ -25,16 +25,16 @@ namespace DAO
         private PhieuNhapHangDAO() { }
         public DataTable getAllPhieuNhapHang()
         {
-            return DataProvider.Instance.ExecuteQuery("SELECT MAPHIEU, NGAYLAP, TONGGIANHAP FROM PhieuNhapHang");
+            return DataProvider.Instance.ExecuteQuery("SELECT MAPHIEU, TENNCC, NGAYLAP, TONGGIANHAP FROM PhieuNhapHang pnh JOIN NhaCungCap ncc ON pnh.MANCC = ncc.MANCC");
         }
         public string getMaphieu()
         {
             string res = Convert.ToString(DataProvider.Instance.ExecuteScalar("SELECT dbo.func_taoMaPhieu()"));
             return res;
         }
-        public bool insertPhieuNhapHang(String maphieu, string ngaylap, double tonggianhap)
+        public bool insertPhieuNhapHang(String maphieu, string mancc, string ngaylap, double tonggianhap)
         {
-            String query = string.Format("INSERT INTO PhieuNhapHang VALUES('{0}', '{1}', {2})", maphieu, ngaylap, tonggianhap);
+            String query = string.Format("INSERT INTO PhieuNhapHang VALUES('{0}', '{1}', '{2}', {3})", maphieu, mancc, ngaylap, tonggianhap);
             return DataProvider.Instance.ExecuteNonQuery(query) > 0;
         }
     }

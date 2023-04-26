@@ -33,6 +33,7 @@ CREATE TABLE Thuoc
 CREATE TABLE PhieuNhapHang
 (
 	MAPHIEU VARCHAR(10) PRIMARY KEY,
+	MANCC VARCHAR(10),
 	NGAYLAP DATE DEFAULT GETDATE(),
 	TONGGIANHAP FLOAT
 )
@@ -89,6 +90,7 @@ BEGIN
 	declare @mancc varchar(10)
 	set @mancc = (select MANCC from deleted)
 	delete from Thuoc where MANCC = @mancc
+	delete from PhieuNhapHang where MANCC = @mancc
 END
 go
 
@@ -96,7 +98,6 @@ CREATE TRIGGER trg_xoathuoc ON Thuoc
 FOR DELETE
 AS
 BEGIN
-	
 	delete from KhoThuoc where SODK in (select SODK from deleted)
 END
 
